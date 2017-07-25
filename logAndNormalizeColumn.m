@@ -1,4 +1,4 @@
-function [col] = logAndNorm(col)
+function [col] = logAndNormalizeColumn(col)
 
 % Input 1 : The array of data
 % Output : The logged and normalized data
