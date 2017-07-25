@@ -1,4 +1,9 @@
 function [retVals]=removeUnknownVals(vals, unknowns)
+% Removes unknown values from an array and replaces them with NaN
+% Input 1: The values including any unknowns
+% Input 2: Array of unknown values to be checked against
+% Output : Double array of values
+
 
 % Number of elements
 n = length(vals);
