@@ -6,9 +6,9 @@ function [col] = removeNormalDistOutliers(col, numDeviations)
 % Output  : The data with outliers set to NaN 
 
 
-% Find the mean and standard deviation
-stdDev = std(col);
-avg = mean(col);
+% Find the mean and standard deviation (ignoring NaN)
+stdDev = nanstd(col);
+avg = nanmean(col);
 
 % Calculate the highest and lowest possible values
 lowerBound = avg - (numDeviations * stdDev);
