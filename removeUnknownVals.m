@@ -19,6 +19,6 @@ parfor i=1:n
    if unknownLocs(i) % If the element is unknown
       retVals(i) = NaN;
    else
-      retVals(i) = str2double(cell2mat(vals(i)));
+      retVals(i) = str2double(vals(i));
    end 
 end
