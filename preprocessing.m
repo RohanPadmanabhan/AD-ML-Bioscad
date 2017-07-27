@@ -45,7 +45,7 @@ end
 clear i numericalDataStartColumn numericalDataEndColumn stdDevLimit
 
 
-%% Remove columns with lack of values
+%% Remove columns (attributes) with lack of values
 dataStartColumn = 2;
 dataEndColumn = 45;
 minimumFillPercentage = 85;
@@ -54,12 +54,28 @@ i = dataStartColumn; % First column to be tested
 while i <= dataEndColumn
    if isUnderfilled(table2array(preprocessedData(:,i)), minimumFillPercentage)
         preprocessedData(:,i) = [];
-        dataEndColumn = dataEndColumn - 1; %Now one fewer column
+        dataEndColumn = dataEndColumn - 1; % Now one fewer column
    else
        i = i + 1; % Move to next column
    end
 end
 
-clear dataStartColumn dataEndColumn i minimumFillPercentage
+clear i
+
+%% Remove rows (data points) with lack of values
+
+i = 1; % First row to be tested
+[n, ~] = size(preprocessedData); % Number of elements
+
+% Repeat for each row
+while i <= n
+   if isUnderfilled(table2array(preprocessedData(i,dataStartColumn:dataEndColumn)), minimumFillPercentage)
+        preprocessedData(i,:) = [];
+        n = n - 1; % Now one fewer row
+   else
+       i = i + 1; % Move to next row
+   end
+end
 
 
+clear n i dataStartColumn dataEndColumn minimumFillPercentage
