@@ -26,6 +26,8 @@ preprocessedData.Gender = makeNumericGender(preprocessedData.Gender, "M");
 
 %% Remove unknown values
 unknownLabels = ["not known", "unknown"];
+
+% TODO: Automate this in a loop
 preprocessedData.FLGCarrier = removeUnknownWords(preprocessedData.FLGCarrier, unknownLabels);
 preprocessedData.FLGNumberOfMutations = removeUnknownWords(preprocessedData.FLGNumberOfMutations, unknownLabels);
 
