@@ -5,11 +5,17 @@ function [retVals]=removeUnknownWords(vals, unknowns)
 % Output : Double array of values
 
 
+% Find the elements with unknown values
+try
+    unknownLocs = ismember(vals, unknowns);
+% Catch errors that arise when comparing string to number
+catch ME
+    retVals = vals;
+    return    
+end
+
 % Number of elements
 n = length(vals);
-
-% Find the elements with unknown values
-unknownLocs = ismember(vals, unknowns);
 
 % Initialise a double array for return values
 retVals = zeros(n,1);
