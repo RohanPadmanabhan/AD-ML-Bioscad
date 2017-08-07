@@ -25,9 +25,11 @@ preprocessedData.DateOfVisit = [];
 preprocessedData.Gender = makeNumericGender(preprocessedData.Gender, "M");
 
 %% Remove unknown values
+% List of different possible unknown values
 unknownLabels = ["not known", "unknown"];
 
 % TODO: Automate this in a loop
+% Remove unknown values and make column of doubles
 preprocessedData.FLGCarrier = removeUnknownWords(preprocessedData.FLGCarrier, unknownLabels);
 preprocessedData.FLGNumberOfMutations = removeUnknownWords(preprocessedData.FLGNumberOfMutations, unknownLabels);
 
@@ -47,79 +49,25 @@ end
 clear i numericalDataStartColumn numericalDataEndColumn stdDevLimit
 
 
-%% Remove columns (attributes) with lack of values
-dataStartColumn = 2;
-dataEndColumn = 45;
+%% Remove columns (attributes) & rows (data points) with lack of values
+
+% Create variables defining position of data within table
+dataStartColumn = 2; % First column with numeric data
+[~, dataEndColumn] = size(preprocessedData);
 minimumFillPercentage = 85;
 
-i = dataStartColumn; % First column to be tested
-while i <= dataEndColumn
-   if isUnderfilled(table2array(preprocessedData(:,i)), minimumFillPercentage)
-        preprocessedData(:,i) = [];
-        dataEndColumn = dataEndColumn - 1; % Now one fewer column
-   else
-       i = i + 1; % Move to next column
-   end
-end
+% Remove underfilled columns
+preprocessedData = removeUnderfilledColumns(preprocessedData, dataStartColumn, dataEndColumn, minimumFillPercentage);
 
-clear i
-
-%% Remove rows (data points) with lack of values
-
-i = 1; % First row to be tested
-[n, ~] = size(preprocessedData); % Number of elements
-
-% Repeat for each row
-while i <= n
-   if isUnderfilled(table2array(preprocessedData(i,dataStartColumn:dataEndColumn)), minimumFillPercentage)
-        preprocessedData(i,:) = [];
-        n = n - 1; % Now one fewer row
-   else
-       i = i + 1; % Move to next row
-   end
-end
+% Remove underfilled rows
+[~, dataEndColumn] = size(preprocessedData); % Number of elements
+preprocessedData = removeUnderfilledRows(preprocessedData, dataStartColumn, dataEndColumn, minimumFillPercentage);
 
 
 clear n i dataStartColumn dataEndColumn minimumFillPercentage
 
 
 %% Fill in data using KNN
-
-% Save variables that should not be normalized
-subSCORAD = preprocessedData.SubjectiveSCORAD;
-objSCORAD = preprocessedData.ObjectiveSCORAD;
-ageDays = preprocessedData.AgeAtVisit_inDays_;
-skinType = preprocessedData.SkinType;
-
-% Temporarily normalize data
-preprocessedData.SubjectiveSCORAD = normalizeColumn(preprocessedData.SubjectiveSCORAD);
-preprocessedData.ObjectiveSCORAD = normalizeColumn(preprocessedData.ObjectiveSCORAD);
-preprocessedData.AgeAtVisit_inDays_ = normalizeColumn(preprocessedData.AgeAtVisit_inDays_);
-preprocessedData.SkinType_ = normalizeColumn(preprocessedData.SkinType);
-
-% Create a new table with only the numeric data
-[~, p] = size(preprocessedData);
-numOfStringCols = 1;
-numericsOnly = preprocessedData(:, numOfStringCols+1:p);
-
-% Use KNN on the numerics only table to fill in the blanks
-[nNumerics, pNumberics] = size(numericsOnly);
-for i=1:nNumerics
-    for j=1:pNumberics
-        if isnan(table2array(numericsOnly(i,j)))
-            preprocessedData{i, j + numOfStringCols} = fillBlank(numericsOnly, i, j);
-        end
-    end
-end
-
-
-% Replace normalized data
-preprocessedData.SubjectiveSCORAD = subSCORAD;
-preprocessedData.ObjectiveSCORAD = objSCORAD;
-preprocessedData.AgeAtVisit_inDays_ = ageDays;
-preprocessedData.SkinType = skinType;
-
-clear ageDays i j nNumerics numericsOnly numOfStringCols objSCORAD subSCORAD p pNumberics skinType
-
+preprocessedData = fillTableBlanks(preprocessedData);
 
 
