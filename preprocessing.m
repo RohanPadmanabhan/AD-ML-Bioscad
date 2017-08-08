@@ -38,11 +38,9 @@ clear unknownLabels
 %% Remove outliers, log, and normalize columns with numeric data
 numericalDataStartColumn = 16;
 numericalDataEndColumn = 45;
-stdDevLimit = 1.96;
 
 % Remove normal distribution outliers and log normalize each column between start and end
 for i = numericalDataStartColumn:numericalDataEndColumn
-    preprocessedData(:,i) = array2table(removeNormalDistOutliers(table2array(preprocessedData(:,i)), stdDevLimit));
     preprocessedData(:,i) = array2table(logAndNormalizeColumn(table2array(preprocessedData(:,i))));
 end
 
