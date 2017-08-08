@@ -13,5 +13,5 @@ countNaN = sum(isnan(col));
 percentageActualVals = ((n - countNaN) / n) * 100;
 
 % Remove column if too many missing values of return unchanged
-underFilled = (percentageActualVals <= cutOffPercentage);
+underFilled = (percentageActualVals < cutOffPercentage);
 
