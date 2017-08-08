@@ -41,6 +41,7 @@ numericalDataEndColumn = 45;
 
 % Remove normal distribution outliers and log normalize each column between start and end
 for i = numericalDataStartColumn:numericalDataEndColumn
+    preprocessedData(:,i) = array2table(replaceZeros(table2array(preprocessedData(:,i))));
     preprocessedData(:,i) = array2table(logAndNormalizeColumn(table2array(preprocessedData(:,i))));
 end
 
