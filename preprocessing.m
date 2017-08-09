@@ -7,7 +7,7 @@ clc;
 %% Load the data
 %filename = "AD-Non-Lesional.xlsx";
 %rawData = readtable(filename);
-load('rawADNonLesionalData.mat');
+load('raw-AD-non-lesional.mat');
 
 
 %% Rename rawData
@@ -37,7 +37,7 @@ clear unknownLabels
 
 %% Remove outliers, log, and normalize columns with numeric data
 numericalDataStartColumn = 16;
-numericalDataEndColumn = 45;
+[~, numericalDataEndColumn] = size(preprocessedData);
 
 % Remove normal distribution outliers and log normalize each column between start and end
 for i = numericalDataStartColumn:numericalDataEndColumn
@@ -69,4 +69,5 @@ clear n i dataStartColumn dataEndColumn minimumFillPercentage
 %% Fill in data using KNN
 preprocessedData = fillTableBlanks(preprocessedData);
 
-
+%% Save the results
+save("preprocessed-AD-non-lesional.mat");
