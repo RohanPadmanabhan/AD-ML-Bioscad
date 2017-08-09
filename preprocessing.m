@@ -7,7 +7,7 @@ clc;
 %% Load the data
 %filename = "AD-Non-Lesional.xlsx";
 %rawData = readtable(filename);
-load('raw-AD-non-lesional.mat');
+load('raw-AD-lesional.mat');
 
 
 %% Rename rawData
@@ -26,14 +26,15 @@ preprocessedData.Gender = makeNumericGender(preprocessedData.Gender, "M");
 
 %% Remove unknown values
 % List of different possible unknown values
-unknownLabels = ["not known", "unknown"];
+unknownLabels = ["not known", "unknown", "not done"];
 
-% TODO: Automate this in a loop
+
 % Remove unknown values and make column of doubles
-preprocessedData.FLGCarrier = removeUnknownWords(preprocessedData.FLGCarrier, unknownLabels);
-preprocessedData.FLGNumberOfMutations = removeUnknownWords(preprocessedData.FLGNumberOfMutations, unknownLabels);
+numDataStartCol = 2;
+[~, numDataEndCol] = size(preprocessedData);
+preprocessedData = removeUnknownsFromTable(preprocessedData, unknownLabels, numDataStartCol, numDataEndCol);
 
-clear unknownLabels
+clear unknownLabels numDataEndCol numDataStartCol
 
 %% Remove outliers, log, and normalize columns with numeric data
 numericalDataStartColumn = 16;
@@ -55,12 +56,12 @@ dataStartColumn = 2; % First column with numeric data
 [~, dataEndColumn] = size(preprocessedData);
 minimumFillPercentage = 90;
 
-% Remove underfilled columns
-preprocessedData = removeUnderfilledColumns(preprocessedData, dataStartColumn, dataEndColumn, minimumFillPercentage);
-
 % Remove underfilled rows
-[~, dataEndColumn] = size(preprocessedData); % Number of elements
 preprocessedData = removeUnderfilledRows(preprocessedData, dataStartColumn, dataEndColumn, minimumFillPercentage);
+
+% Remove underfilled columns
+[~, dataEndColumn] = size(preprocessedData); % Number of elements
+preprocessedData = removeUnderfilledColumns(preprocessedData, dataStartColumn, dataEndColumn, minimumFillPercentage);
 
 
 clear n i dataStartColumn dataEndColumn minimumFillPercentage

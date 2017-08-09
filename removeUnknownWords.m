@@ -9,7 +9,7 @@ function [retVals]=removeUnknownWords(vals, unknowns)
 try
     unknownLocs = ismember(vals, unknowns);
 % Catch errors that arise when comparing string to number
-catch ME
+catch
     retVals = vals;
     return    
 end
