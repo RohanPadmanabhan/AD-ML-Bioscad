@@ -7,7 +7,7 @@ clc;
 %% Load the data
 %filename = "AD-Non-Lesional.xlsx";
 %rawData = readtable(filename);
-load('raw-AD-lesional.mat');
+load('raw-AD-non-lesional.mat');
 
 
 %% Rename rawData
