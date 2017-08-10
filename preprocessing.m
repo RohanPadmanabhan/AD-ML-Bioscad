@@ -5,10 +5,13 @@ clear;
 clc;
 
 %% Load the data
-%filename = "AD-Non-Lesional.xlsx";
-%rawData = readtable(filename);
-load('raw-AD-non-lesional.mat');
+filename = 'combined-non-lesional';
+prefix = 'raw-';
+extension = '.mat';
+fullFile = strcat(prefix, filename, extension);
+load(fullFile);
 
+clear fullFile prefix extension
 
 %% Rename rawData
 preprocessedData = rawData;
@@ -30,14 +33,16 @@ unknownLabels = ["not known", "unknown", "not done"];
 
 
 % Remove unknown values and make column of doubles
-numDataStartCol = 2;
+disp(preprocessedData);
+numDataStartCol = input('In which column does the numeric data start? ');
 [~, numDataEndCol] = size(preprocessedData);
 preprocessedData = removeUnknownsFromTable(preprocessedData, unknownLabels, numDataStartCol, numDataEndCol);
 
-clear unknownLabels numDataEndCol numDataStartCol
+clear unknownLabels numDataEndCol
 
 %% Remove outliers, log, and normalize columns with numeric data
-numericalDataStartColumn = 16;
+disp(preprocessedData);
+numericalDataStartColumn = input('In which column does the continuous data start? ');
 [~, numericalDataEndColumn] = size(preprocessedData);
 
 % Remove normal distribution outliers and log normalize each column between start and end
@@ -52,23 +57,30 @@ clear i numericalDataStartColumn numericalDataEndColumn stdDevLimit
 %% Remove columns (attributes) & rows (data points) with lack of values
 
 % Create variables defining position of data within table
-dataStartColumn = 2; % First column with numeric data
-[~, dataEndColumn] = size(preprocessedData);
+numDataStartCol = 2; % First column with numeric data
+[~,numDataEndCol] = size(preprocessedData);
 minimumFillPercentage = 90;
 
 % Remove underfilled rows
-preprocessedData = removeUnderfilledRows(preprocessedData, dataStartColumn, dataEndColumn, minimumFillPercentage);
+preprocessedData = removeUnderfilledRows(preprocessedData, numDataStartCol, numDataEndCol, minimumFillPercentage);
 
 % Remove underfilled columns
-[~, dataEndColumn] = size(preprocessedData); % Number of elements
-preprocessedData = removeUnderfilledColumns(preprocessedData, dataStartColumn, dataEndColumn, minimumFillPercentage);
+[~, numDataEndCol] = size(preprocessedData); % Number of elements
+preprocessedData = removeUnderfilledColumns(preprocessedData, numDataStartCol, numDataEndCol, minimumFillPercentage);
 
 
-clear n i dataStartColumn dataEndColumn minimumFillPercentage
+clear n i numDataStartCol numDataEndCol minimumFillPercentage
 
 
 %% Fill in data using KNN
 preprocessedData = fillTableBlanks(preprocessedData);
 
 %% Save the results
-save("preprocessed-AD-non-lesional.mat");
+
+
+prefix = 'preprocessed-';
+extension = '.mat';
+fullFile = strcat(prefix, filename, extension);
+save(fullFile);
+
+clear extension filename fullFile prefix
