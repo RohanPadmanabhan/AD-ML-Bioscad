@@ -10,7 +10,7 @@ skinType = preprocessedData.SkinType;
 preprocessedData.SubjectiveSCORAD = normalizeColumn(preprocessedData.SubjectiveSCORAD);
 preprocessedData.ObjectiveSCORAD = normalizeColumn(preprocessedData.ObjectiveSCORAD);
 preprocessedData.AgeAtVisit_inDays_ = normalizeColumn(preprocessedData.AgeAtVisit_inDays_);
-preprocessedData.SkinType_ = normalizeColumn(preprocessedData.SkinType);
+preprocessedData.SkinType = normalizeColumn(preprocessedData.SkinType);
 
 % Create a new table with only the numeric data
 [~, p] = size(preprocessedData);
