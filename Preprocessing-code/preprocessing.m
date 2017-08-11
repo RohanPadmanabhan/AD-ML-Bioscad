@@ -6,7 +6,7 @@ clc;
 
 %% Load the data
 filename = 'combined-non-lesional';
-prefix = 'raw-';
+prefix = '../raw-';
 extension = '.mat';
 fullFile = strcat(prefix, filename, extension);
 load(fullFile);
@@ -78,7 +78,7 @@ preprocessedData = fillTableBlanks(preprocessedData);
 %% Save the results
 
 
-prefix = 'preprocessed-';
+prefix = '../preprocessed-';
 extension = '.mat';
 fullFile = strcat(prefix, filename, extension);
 save(fullFile);
