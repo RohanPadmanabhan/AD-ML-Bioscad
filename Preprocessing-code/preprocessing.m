@@ -5,7 +5,7 @@ clear;
 clc;
 
 %% Load the data
-filename = 'combined-non-lesional';
+filename = 'AD-lesional';
 prefix = '../raw-';
 extension = '.mat';
 fullFile = strcat(prefix, filename, extension);
@@ -34,7 +34,7 @@ unknownLabels = ["not known", "unknown", "not done"];
 
 % Remove unknown values and make column of doubles
 disp(preprocessedData);
-numDataStartCol = input('In which column does the numeric data start? ');
+numDataStartCol = 2; %input('In which column does the numeric data start? ');
 [~, numDataEndCol] = size(preprocessedData);
 preprocessedData = removeUnknownsFromTable(preprocessedData, unknownLabels, numDataStartCol, numDataEndCol);
 
@@ -42,7 +42,7 @@ clear unknownLabels numDataEndCol
 
 %% Remove outliers, log, and normalize columns with numeric data
 disp(preprocessedData);
-numericalDataStartColumn = input('In which column does the continuous data start? ');
+numericalDataStartColumn = 16; %input('In which column does the continuous data start? ');
 [~, numericalDataEndColumn] = size(preprocessedData);
 
 % Remove normal distribution outliers and log normalize each column between start and end
