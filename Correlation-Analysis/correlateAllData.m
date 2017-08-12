@@ -6,15 +6,17 @@ clc
 
 
 % Define filenames
-onlyAD = 'AD-non-lesional';
-allData = 'combined-non-lesional';
+adNonLesional = 'AD-non-lesional';
+combinedNonLesional = 'combined-non-lesional';
+adLesional = 'AD-lesional';
 
 % Correlate the data
-[ADPMCC, ADSpearman] = correlateAttributes(onlyAD);
-[allPMCC, allSpearman] = correlateAttributes(allData);
+[adNonLesionalPMCC, adNonLesionalSpearman] = correlateAttributes(adNonLesional);
+[combinedNonLesionalPMCC, combinedNonLesionalSpearman] = correlateAttributes(combinedNonLesional);
+[adLesionalPMCC, adLesionalSpearman] = correlateAttributes(adLesional);
 
 
 % Garbage collection
-clear onlyAD allData
+clear adNonLesional combinedNonLesional adLesional
 
 
