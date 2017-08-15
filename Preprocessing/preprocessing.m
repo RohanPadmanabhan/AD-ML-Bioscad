@@ -33,22 +33,21 @@ unknownLabels = ["not known", "unknown", "not done"];
 
 
 % Remove unknown values and make column of doubles
-%disp(preprocessedData);
-numDataStartCol = 2; %input('In which column does the numeric data start? ');
+numDataStartCol = 2;
 [~, numDataEndCol] = size(preprocessedData);
 preprocessedData = removeUnknownsFromTable(preprocessedData, unknownLabels, numDataStartCol, numDataEndCol);
 
 clear unknownLabels numDataEndCol
 
 %% Remove outliers, log, and normalize columns with numeric data
-%disp(preprocessedData);
-numericalDataStartColumn = 16; %input('In which column does the continuous data start? ');
+
+numericalDataStartColumn = 16;
 [~, numericalDataEndColumn] = size(preprocessedData);
 
 % Remove normal distribution outliers and log normalize each column between start and end
 for i = numericalDataStartColumn:numericalDataEndColumn
     preprocessedData(:,i) = array2table(replaceZeros(table2array(preprocessedData(:,i))));
-    preprocessedData(:,i) = array2table(logAndNormalizeColumn(table2array(preprocessedData(:,i))));
+    %preprocessedData(:,i) = array2table(logAndNormalizeColumn(table2array(preprocessedData(:,i))));
 end
 
 clear i numericalDataStartColumn numericalDataEndColumn stdDevLimit
@@ -73,10 +72,21 @@ clear n i numDataStartCol numDataEndCol minimumFillPercentage
 
 
 %% Fill in data using KNN
-preprocessedData = fillTableBlanks(preprocessedData);
 
+% Select only the continuous data
+[~,numDataEndCol] = size(preprocessedData);
+continuousData = table2array(preprocessedData(:, 2:numDataEndCol));
+
+% Replace NaNs using 3 nearest neighbours
+k = 3;
+continuousData = transpose(knnimpute(transpose(continuousData), k));
+
+% Insert the new data back into the table
+preprocessedData(:, 2:numDataEndCol) = array2table(continuousData);
+
+
+clear numDataEndCol k continuousData
 %% Save the results
-
 
 prefix = '../preprocessed-';
 extension = '.mat';
