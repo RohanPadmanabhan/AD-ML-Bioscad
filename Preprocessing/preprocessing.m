@@ -33,7 +33,7 @@ unknownLabels = ["not known", "unknown", "not done"];
 
 
 % Remove unknown values and make column of doubles
-disp(preprocessedData);
+%disp(preprocessedData);
 numDataStartCol = 2; %input('In which column does the numeric data start? ');
 [~, numDataEndCol] = size(preprocessedData);
 preprocessedData = removeUnknownsFromTable(preprocessedData, unknownLabels, numDataStartCol, numDataEndCol);
@@ -41,7 +41,7 @@ preprocessedData = removeUnknownsFromTable(preprocessedData, unknownLabels, numD
 clear unknownLabels numDataEndCol
 
 %% Remove outliers, log, and normalize columns with numeric data
-disp(preprocessedData);
+%disp(preprocessedData);
 numericalDataStartColumn = 16; %input('In which column does the continuous data start? ');
 [~, numericalDataEndColumn] = size(preprocessedData);
 
