@@ -1,11 +1,8 @@
 %%Preprocessing the data
 
-% Clean slate
-clear;
-clc;
+function [preprocessedData] = preprocessing(filename)
 
 %% Load the data
-filename = 'AD-lesional';
 prefix = '../raw-';
 extension = '.mat';
 fullFile = strcat(prefix, filename, extension);
@@ -47,7 +44,7 @@ numericalDataStartColumn = 16;
 % Remove normal distribution outliers and log normalize each column between start and end
 for i = numericalDataStartColumn:numericalDataEndColumn
     preprocessedData(:,i) = array2table(replaceZeros(table2array(preprocessedData(:,i))));
-    %preprocessedData(:,i) = array2table(logAndNormalizeColumn(table2array(preprocessedData(:,i))));
+    preprocessedData(:,i) = array2table(logAndNormalizeColumn(table2array(preprocessedData(:,i))));
 end
 
 clear i numericalDataStartColumn numericalDataEndColumn stdDevLimit
