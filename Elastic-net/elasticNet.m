@@ -28,18 +28,20 @@ contData = table2array(preprocessedData(:, contDataStartCol:p));
 clear contDataStartCol p
 
 
-%% Extract the testing set
+%% Split the data set
 
-% Randomnly select points
+% Randomnly select 20% of points for testing
 testProportion = 0.2;
-[trainCVPoints, testPoints] = crossvalind('HoldOut', n, testProportion);
+[trainValPoints, testPoints] = crossvalind('HoldOut', n, testProportion);
 
 % Extract the data for final testing
-inpTest = objSCORAD(testPoints,:);
-outTest = contData(testPoints, :);
+objSCORADTest = objSCORAD(testPoints, :);
+contDataTest = contData(testPoints, :);
 
+% Extract the points that can be used in training and crossvalidation
+objSCORAD = objSCORAD(trainValPoints, :);
+contData = contData(trainValPoints, :);
 
-
-
+clear testProportion trainCVPoints testPoints n
 
 
