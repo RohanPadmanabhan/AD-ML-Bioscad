@@ -22,7 +22,7 @@ clear fullFile prefix extension rawData
 objSCORAD = preprocessedData.ObjectiveSCORAD;
 
 contDataStartCol = 16;
-[n, p] = size(preprocessedData);
+[~, p] = size(preprocessedData);
 contData = table2array(preprocessedData(:, contDataStartCol:p));
 
 clear contDataStartCol p
@@ -32,15 +32,7 @@ clear contDataStartCol p
 
 % Randomnly select 20% of points for testing
 testProportion = 0.2;
-[trainValPoints, testPoints] = crossvalind('HoldOut', n, testProportion);
-
-% Extract the data for final testing
-objSCORADTest = objSCORAD(testPoints, :);
-contDataTest = contData(testPoints, :);
-
-% Extract the points that can be used in training and crossvalidation
-objSCORAD = objSCORAD(trainValPoints, :);
-contData = contData(trainValPoints, :);
+[contDataTest, contData, objSCORADTest, objSCORAD] = splitData(contData, objSCORAD, testProportion);
 
 clear testProportion trainCVPoints testPoints n
 
