@@ -94,12 +94,15 @@ for i = numericalDataStartColumn:numericalDataEndColumn
     preprocessedData(:,i) = array2table(normalizeColumn(table2array(preprocessedData(:,i))));
 end
 
-clear i numericalDataStartColumn
+clear i numericalDataStartColumn numericalDataEndColumn
 %% Save the results
 
+% Save location
 prefix = '../preprocessed-';
 extension = '.mat';
 fullFile = strcat(prefix, filename, extension);
-save(fullFile);
+
+% Save only necessary variables
+save(fullFile, '*Data');
 
 clear extension filename fullFile prefix
