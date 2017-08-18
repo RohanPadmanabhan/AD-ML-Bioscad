@@ -29,6 +29,16 @@ grid on;
 ylabel('Proportion successful predictions');
 
 
+%% Create graph to show prediction correlation
+
+predVsAct = figure('name', 'Predicted vs Actual oSCORAD');
+scatter(yPred, yTest);
+title('Model Predicted vs Actual oSCORAD');
+xlabel('Predicted oSCORAD');
+ylabel('Actual oSCORAD');
+axis square
+
+
 %% Create graphs to show alpha and lambda performance
 alpLamPerf = figure('name', 'Alpha and lambda performance');
 set(gcf, 'Position', [100, 100, 1600, 400])
