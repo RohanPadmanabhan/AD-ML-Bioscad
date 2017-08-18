@@ -85,10 +85,10 @@ parfor i = 1 : nCross
     blFull = [fitInfo.Intercept; bl];
     
     % Predict the values using the newly trained model
-    yPred = [ones(size(xVal, 1), 1), xVal] * blFull;
+    yPred = [ones(size(xTest, 1), 1), xTest] * blFull;
     
     % Asses the performance
-    predPerf(i) = rmse(yVal, yPred);
+    predPerf(i) = rmse(yTest, yPred);
     predSucc(i) = proportionSuccessful(yTest, yPred, allowedSCORADDiff);
     
 end
