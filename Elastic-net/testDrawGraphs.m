@@ -87,3 +87,12 @@ title('Lambda vs RMSE');
 xlabel('Lambda');
 ylabel('RMSE');
 axis square
+
+%% Create graph to show prediction correlation
+
+% Plot the graph
+residualVsActual = figure('name', 'Residual vs Actual oSCORAD');
+scatter(objSCORAD, residuals, 'x');
+title('Residual vs Actual oSCORAD');
+xlabel('Actual oSCORAD');
+ylabel('Residual');

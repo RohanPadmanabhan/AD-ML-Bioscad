@@ -129,6 +129,7 @@ yPred = yPred .* (yPred > 0);
 % Check the results against the originals
 predPerfFinal = rmse(objSCORAD, yPred);
 predSuccFinal = proportionSuccessful(objSCORAD, yPred, mcid);
+residuals = objSCORAD - yPred;
 
 clear mcid bl blFull fitInfo testProportion xTest xTrain yTrain coeffs
 
