@@ -31,11 +31,30 @@ ylabel('Proportion successful predictions');
 
 %% Create graph to show prediction correlation
 
+% Plot the graph
 predVsAct = figure('name', 'Predicted vs Actual oSCORAD');
-scatter(objSCORAD, yPred);
+scatter(objSCORAD, yPred, 'x');
 title('Model Predicted vs Actual oSCORAD');
 xlabel('Actual oSCORAD');
 ylabel('Predicted oSCORAD');
+
+% Add upper reference lines
+upperLine = refline([1, 10]);
+upperLine.Color = 'r';
+upperLine.LineStyle = '--';
+
+% Add middle reference lines
+middleLine = refline([1, 0]);
+middleLine.Color = 'r';
+
+% Add lower reference lines
+lowerLine = refline([1, -10]);
+lowerLine.Color = 'r';
+lowerLine.LineStyle = '--';
+
+% Set the axes
+maxAxis = max(max(objSCORAD), max(yPred));
+axis([0, maxAxis, 0, maxAxis]);
 axis square
 
 
