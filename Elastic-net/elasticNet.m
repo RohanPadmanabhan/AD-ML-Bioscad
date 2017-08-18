@@ -71,7 +71,7 @@ parfor i = 1 : nCross
     end
     
     % Find the position of the first value with minimum difference
-    % This prioritises low alpha values
+    % This prioritises low alpha values (closer to ridge)
     [minDiff, minDiffLoc] = min(diffs(:));
     [minDiffRow, minDiffCol] = ind2sub(size(diffs), minDiffLoc);
     
