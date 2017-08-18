@@ -15,7 +15,7 @@ extension = '.mat';
 fullFile = strcat(prefix, filename, extension);
 load(fullFile);
 
-clear fullFile prefix extension rawData
+clear fullFile prefix extension rawData filename
 
 
 %% Extract SCORAD and the continuous data
@@ -35,7 +35,7 @@ clear contDataStartCol p
 nCross = 100;
 testProportion = 0.2;
 valProportion = 0.25;
-allowedSCORADDiff = 2;
+mcid = 9;
 
 % Define alpha and lambda ranges
 alpha = 0.1:0.05:1;
@@ -57,39 +57,39 @@ parfor i = 1 : nCross
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
     % Try every combination of lambda and alpha
-    diffs = zeros(length(lambda), length(alpha));
+    diffs = zeros(length(alpha),length(lambda));
     for l = 1:length(lambda)
         for a = 1:length(alpha)
             
             % Train the model on the training data
-            [bl, fitInfo] = lasso(xTrain, yTrain, 'Lambda', lambda(l), 'Alpha', alpha(a));
-            blFull = [fitInfo.Intercept; bl];
+            [coeffs, fitInfo] = lasso(xTrain, yTrain, 'Lambda', lambda(l), 'Alpha', alpha(a));
+            coeffsFull = [fitInfo.Intercept; coeffs];
             
             % Validate the model on validation data
-            yPred = [ones(size(xVal, 1), 1), xVal] * blFull;
-            diffs(l,a) = rmse(yVal, yPred);
+            yPred = [ones(size(xVal, 1), 1), xVal] * coeffsFull;
+            diffs(a,l) = rmse(yVal, yPred);
         end
     end
     
     % Find the position of the first value with minimum difference
-    % This prioritises low alpha values (closer to ridge)
-    [minDiff, minDiffLoc] = min(diffs(:));
+    % This prioritises high alpha values (closer to lasso)
+    [~, minDiffLoc] = min(diffs(:));
     [minDiffRow, minDiffCol] = ind2sub(size(diffs), minDiffLoc);
     
     % Store the best alpha and lambda values
-    bestLambda(i) = lambda(minDiffRow);
-    bestAlpha(i) = alpha(minDiffCol);
+    bestLambda(i) = lambda(minDiffCol);
+    bestAlpha(i) = alpha(minDiffRow);
     
     % Re-train the model with the best alpha and lambda
-    [bl, fitInfo] = lasso(xTrain, yTrain, 'Lambda', bestLambda(i), 'Alpha', bestAlpha(i));
-    blFull = [fitInfo.Intercept; bl];
+    [coeffs, fitInfo] = lasso(xTrain, yTrain, 'Lambda', bestLambda(i), 'Alpha', bestAlpha(i));
+    coeffsFull = [fitInfo.Intercept; coeffs];
     
     % Predict the values using the newly trained model
-    yPred = [ones(size(xTest, 1), 1), xTest] * blFull;
+    yPred = [ones(size(xTest, 1), 1), xTest] * coeffsFull;
     
     % Asses the performance
     predPerf(i) = rmse(yTest, yPred);
-    predSucc(i) = proportionSuccessful(yTest, yPred, allowedSCORADDiff);
+    predSucc(i) = proportionSuccessful(yTest, yPred, mcid);
     
 end
 
@@ -117,15 +117,15 @@ clear sumWeights weights
 %% Re-train the model with the final values of alpha and lambda
 
 % Train the model on the training data
-[bl, fitInfo] = lasso(contData, objSCORAD, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
-blFull = [fitInfo.Intercept; bl];
+[coeffs, fitInfo] = lasso(contData, objSCORAD, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
+coeffsFull = [fitInfo.Intercept; coeffs];
 
 % Predict the results and test
-yPred = [ones(size(contData, 1), 1), contData] * blFull;
+yPred = [ones(size(contData, 1), 1), contData] * coeffsFull;
 predPerfFinal = rmse(objSCORAD, yPred);
-predSuccFinal = proportionSuccessful(objSCORAD, yPred, allowedSCORADDiff);
+predSuccFinal = proportionSuccessful(objSCORAD, yPred, mcid);
 
-clear allowedSCORADDiff bl blFull fitInfo testProportion xTest xTrain yTrain 
+clear mcid bl blFull fitInfo testProportion xTest xTrain yTrain coeffs
 
 %% Save the results
 save('post-ENET-variables.mat');
