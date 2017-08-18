@@ -28,13 +28,6 @@ contData = table2array(preprocessedData(:, contDataStartCol:p));
 clear contDataStartCol p
 
 
-%% Split off the test data set
-
-% Randomnly select 20% of points for testing
-
-clear testProportion trainCVPoints testPoints n
-
-
 %% Elastic net
 
 % Define constants
@@ -45,7 +38,7 @@ allowedSCORADDiff = 2;
 
 % Define alpha and lambda ranges
 alpha = 0.1:0.1:1;
-lambda = 10.^(-3:0.5:5);
+lambda = 10.^(-3:0.1:5);
 
 
 % Pre-allocate space
