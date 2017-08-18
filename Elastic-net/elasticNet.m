@@ -67,6 +67,7 @@ parfor i = 1 : nCross
             
             % Validate the model on validation data
             yPred = [ones(size(xVal, 1), 1), xVal] * coeffsFull;
+            yPred = yPred .* (yPred > 0);
             diffs(a,l) = rmse(yVal, yPred);
         end
     end
@@ -86,6 +87,7 @@ parfor i = 1 : nCross
     
     % Predict the values using the newly trained model
     yPred = [ones(size(xTest, 1), 1), xTest] * coeffsFull;
+    yPred = yPred .* (yPred > 0);
     
     % Asses the performance
     predPerf(i) = rmse(yTest, yPred);
@@ -120,8 +122,11 @@ clear sumWeights weights
 [coeffs, fitInfo] = lasso(contData, objSCORAD, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
 coeffsFull = [fitInfo.Intercept; coeffs];
 
-% Predict the results and test
+% Predict the results
 yPred = [ones(size(contData, 1), 1), contData] * coeffsFull;
+yPred = yPred .* (yPred > 0);
+
+% Check the results against the originals
 predPerfFinal = rmse(objSCORAD, yPred);
 predSuccFinal = proportionSuccessful(objSCORAD, yPred, mcid);
 
