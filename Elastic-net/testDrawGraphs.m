@@ -32,10 +32,10 @@ ylabel('Proportion successful predictions');
 %% Create graph to show prediction correlation
 
 predVsAct = figure('name', 'Predicted vs Actual oSCORAD');
-scatter(yPred, yTest);
+scatter(objSCORAD, yPred);
 title('Model Predicted vs Actual oSCORAD');
-xlabel('Predicted oSCORAD');
-ylabel('Actual oSCORAD');
+xlabel('Actual oSCORAD');
+ylabel('Predicted oSCORAD');
 axis square
 
 
