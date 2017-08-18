@@ -38,8 +38,8 @@ valProportion = 0.25;
 mcid = 9;
 
 % Define alpha and lambda ranges
-alpha = 0.1:0.05:1;
-lambda = 10.^(-3:0.1:5);
+alpha = 0.05:0.05:1;
+lambda = 10.^(-6:0.1:0.8);
 
 
 % Pre-allocate space
