@@ -96,7 +96,7 @@ end
 toc
 
 
-clear allowedSCORADDiff nCross testProportion valProportion
+clear i nCross valProportion
 
 
 %% Find the mean alpha and lambda
@@ -112,5 +112,21 @@ alphaWeighted = sum(bestAlpha .* weights) / sumWeights;
 lambdaWeighted = sum(bestLambda .* weights) / sumWeights;
 
 
+%% Re-train the model with the final values of alpha and lambda
+
+% Split the training and testing data
+[xTest, xTrain, yTest, yTrain] = splitData(contData, objSCORAD, testProportion);
+
+% Train the model on the training data
+[bl, fitInfo] = lasso(xTrain, yTrain, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
+blFull = [fitInfo.Intercept; bl];
+
+% Predict the results and test
+yPred = [ones(size(xTest, 1), 1), xTest] * blFull;
+predPerfFinal = rmse(yTest, yPred);
+predSuccFinal = proportionSuccessful(yTest, yPred, allowedSCORADDiff);
+
+
 %% Save the results
 save('post-ENET-variables.mat');
+
