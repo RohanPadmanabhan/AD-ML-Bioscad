@@ -1,10 +1,11 @@
-%
+%% Parallelised elastic net with cross-validation for BIOSCAD data
 
 
 
 %% Clean slate
 clear
 clc
+close all
 
 
 %% Load the data
@@ -37,7 +38,7 @@ valProportion = 0.25;
 allowedSCORADDiff = 2;
 
 % Define alpha and lambda ranges
-alpha = 0.1:0.1:1;
+alpha = 0.1:0.05:1;
 lambda = 10.^(-3:0.1:5);
 
 
@@ -92,5 +93,24 @@ parfor i = 1 : nCross
     
 end
 
-
 toc
+
+
+clear allowedSCORADDiff nCross testProportion valProportion
+
+
+%% Find the mean alpha and lambda
+
+% Find the unweighted mean
+alphaUnweighted = mean(bestAlpha);
+lambdaUnweighted = mean(bestLambda);
+
+% Find the weighted mean
+weights = predPerf.^-1;
+sumWeights = sum(weights);
+alphaWeighted = sum(bestAlpha .* weights) / sumWeights;
+lambdaWeighted = sum(bestLambda .* weights) / sumWeights;
+
+
+%% Save the results
+save('post-ENET-variables.mat');
