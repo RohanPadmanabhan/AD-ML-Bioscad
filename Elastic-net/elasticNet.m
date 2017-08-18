@@ -111,6 +111,8 @@ sumWeights = sum(weights);
 alphaWeighted = sum(bestAlpha .* weights) / sumWeights;
 lambdaWeighted = sum(bestLambda .* weights) / sumWeights;
 
+clear sumWeights weights
+
 
 %% Re-train the model with the final values of alpha and lambda
 
@@ -126,6 +128,7 @@ yPred = [ones(size(xTest, 1), 1), xTest] * blFull;
 predPerfFinal = rmse(yTest, yPred);
 predSuccFinal = proportionSuccessful(yTest, yPred, allowedSCORADDiff);
 
+clear allowedSCORADDiff bl blFull fitInfo testProportion xTest xTrain yTrain 
 
 %% Save the results
 save('post-ENET-variables.mat');
