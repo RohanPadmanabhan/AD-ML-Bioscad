@@ -116,20 +116,16 @@ clear sumWeights weights
 
 %% Re-train the model with the final values of alpha and lambda
 
-% Split the training and testing data
-[xTest, xTrain, yTest, yTrain] = splitData(contData, objSCORAD, testProportion);
-
 % Train the model on the training data
-[bl, fitInfo] = lasso(xTrain, yTrain, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
+[bl, fitInfo] = lasso(contData, objSCORAD, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
 blFull = [fitInfo.Intercept; bl];
 
 % Predict the results and test
-yPred = [ones(size(xTest, 1), 1), xTest] * blFull;
-predPerfFinal = rmse(yTest, yPred);
-predSuccFinal = proportionSuccessful(yTest, yPred, allowedSCORADDiff);
+yPred = [ones(size(contData, 1), 1), contData] * blFull;
+predPerfFinal = rmse(objSCORAD, yPred);
+predSuccFinal = proportionSuccessful(objSCORAD, yPred, allowedSCORADDiff);
 
 clear allowedSCORADDiff bl blFull fitInfo testProportion xTest xTrain yTrain 
 
 %% Save the results
 save('post-ENET-variables.mat');
-
