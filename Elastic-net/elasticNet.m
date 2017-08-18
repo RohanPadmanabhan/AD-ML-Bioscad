@@ -57,7 +57,7 @@ parfor i = 1 : nCross
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
     % Try every combination of lambda and alpha
-    diffs = zeros(length(alpha),length(lambda));
+    diffs = zeros(length(lambda), length(alpha));
     for l = 1:length(lambda)
         for a = 1:length(alpha)
             
@@ -68,7 +68,7 @@ parfor i = 1 : nCross
             % Validate the model on validation data
             yPred = [ones(size(xVal, 1), 1), xVal] * coeffsFull;
             yPred = yPred .* (yPred > 0);
-            diffs(a,l) = rmse(yVal, yPred);
+            diffs(l,a) = rmse(yVal, yPred);
         end
     end
     
@@ -78,8 +78,8 @@ parfor i = 1 : nCross
     [minDiffRow, minDiffCol] = ind2sub(size(diffs), minDiffLoc);
     
     % Store the best alpha and lambda values
-    bestLambda(i) = lambda(minDiffCol);
-    bestAlpha(i) = alpha(minDiffRow);
+    bestLambda(i) = lambda(minDiffRow);
+    bestAlpha(i) = alpha(minDiffCol);
     
     % Re-train the model with the best alpha and lambda
     [coeffs, fitInfo] = lasso(xTrain, yTrain, 'Lambda', bestLambda(i), 'Alpha', bestAlpha(i));
