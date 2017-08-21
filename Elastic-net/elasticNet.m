@@ -25,6 +25,8 @@ contDataStartCol = 19;
 [~, p] = size(preprocessedData);
 contData = table2array(preprocessedData(:, contDataStartCol:p));
 
+clear contDataStartCol p
+
 %% Extract the categorical data
 
 % Define start and end locations
@@ -45,31 +47,37 @@ catData.skinTypeOther = [];
 % Convert to table
 catData = table2array(catData);
 
+clear catDataStartCol catDataEndCol
 
 %% Combine the two to get the input data
 inpData = [catData, contData];
 
-clear contDataStartCol p catData contData catDataStartCol catDataEndCol
-
+clear catData contData
 
 %% Elastic net
 
 % Define constants
-nCross = 100;
+nCross = 30;
 testProportion = 0.2;
 valProportion = 0.25;
 mcid = 9;
+[n, ~] = size(objSCORAD);
 
 % Define alpha and lambda ranges
 alpha = 0.05:0.05:1;
-lambda = 10.^(-6:0.1:0.6);
+lambda = 10.^(-1:0.1:0.6);
 
 
-% Pre-allocate space
+% Pre-allocate space for arrays used in loop
 bestLambda = zeros(nCross, 1);
 bestAlpha = zeros(nCross, 1);
 predPerf = zeros(nCross, 1);
 predSucc = zeros(nCross, 1);
+
+% Pre-allocate space for results
+numTestCases = n * testProportion;
+yPredFull = zeros(nCross, numTestCases);
+yTestFull = zeros(nCross, numTestCases);
 
 tic
 
@@ -116,13 +124,25 @@ parfor i = 1 : nCross
     predPerf(i) = rmse(yTest, yPred);
     predSucc(i) = proportionSuccessful(yTest, yPred, mcid);
     
+    %Save the results
+    yPredFull(i, :) = yPred;
+    yTestFull(i, :) = yTest;
+    
 end
 
 toc
 
 
-clear i nCross valProportion
+clear i nCross valProportion alpha lambda
 
+%% Reshape the predictions and results in to a 1D matrix
+
+% Flatten the matrix
+yTestFull = reshape(yTestFull, [], 1);
+yPredFull = reshape(yPredFull, [], 1);
+
+% Calculate the residuals
+residuals = yTestFull - yPredFull;
 
 %% Find the mean alpha and lambda
 
@@ -136,7 +156,7 @@ sumWeights = sum(weights);
 alphaWeighted = sum(bestAlpha .* weights) / sumWeights;
 lambdaWeighted = sum(bestLambda .* weights) / sumWeights;
 
-clear sumWeights weights
+clear sumWeights weights bestAlpha bestLambda
 
 
 %% Re-train the model with the final values of alpha and lambda
@@ -144,15 +164,6 @@ clear sumWeights weights
 % Train the model on the training data
 [coeffs, fitInfo] = lasso(inpData, objSCORAD, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
 coeffsFull = [fitInfo.Intercept; coeffs];
-
-% Predict the results
-yPred = [ones(size(inpData, 1), 1), inpData] * coeffsFull;
-yPred = yPred .* (yPred > 0);
-
-% Check the results against the originals
-predPerfFinal = rmse(objSCORAD, yPred);
-predSuccFinal = proportionSuccessful(objSCORAD, yPred, mcid);
-residuals = objSCORAD - yPred;
 
 clear mcid bl blFull fitInfo testProportion xTest xTrain yTrain coeffs
 
