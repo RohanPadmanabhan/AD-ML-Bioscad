@@ -22,7 +22,7 @@ clear fullFile prefix extension rawData filename
 
 objSCORAD = preprocessedData.ObjectiveSCORAD;
 
-contDataStartCol = 16;
+contDataStartCol = 19;
 [~, p] = size(preprocessedData);
 contData = table2array(preprocessedData(:, contDataStartCol:p));
 
