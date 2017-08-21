@@ -33,7 +33,7 @@ ylabel('Proportion successful predictions');
 
 % Plot the graph
 predVsAct = figure('name', 'Predicted vs Actual oSCORAD');
-scatter(objSCORAD, yPred, 'x');
+scatter(yTestFull, yPredFull, 'x');
 title('Model Predicted vs Actual oSCORAD');
 xlabel('Actual oSCORAD');
 ylabel('Predicted oSCORAD');
@@ -53,7 +53,7 @@ lowerLine.Color = 'r';
 lowerLine.LineStyle = '--';
 
 % Set the axes
-maxAxis = max(max(objSCORAD), max(yPred));
+maxAxis = max(max(yTestFull), max(yPredFull));
 axis([0, maxAxis, 0, maxAxis]);
 axis square
 
@@ -92,7 +92,7 @@ axis square
 
 % Plot the graph
 residualVsActual = figure('name', 'Residual vs Actual oSCORAD');
-scatter(objSCORAD, residuals, 'x');
+scatter(yTestFull, residuals, 'x');
 title('Residual vs Actual oSCORAD');
 xlabel('Actual oSCORAD');
 ylabel('Residual');
