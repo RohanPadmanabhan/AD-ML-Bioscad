@@ -86,15 +86,7 @@ preprocessedData(:, 2:numDataEndCol) = array2table(continuousData);
 
 clear numDataEndCol k continuousData
 
-%% Re-normalise the data
 
-[~, numericalDataEndColumn] = size(preprocessedData);
-
-for i = numericalDataStartColumn:numericalDataEndColumn
-    preprocessedData(:,i) = array2table(normalizeColumn(table2array(preprocessedData(:,i))));
-end
-
-clear i numericalDataStartColumn numericalDataEndColumn
 %% Save the results
 
 % Save location
