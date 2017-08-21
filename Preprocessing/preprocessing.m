@@ -87,6 +87,9 @@ preprocessedData(:, 2:numDataEndCol) = array2table(continuousData);
 clear numDataEndCol k continuousData numDataStartCol
 
 
+%% Split the skintype catergorical data
+preprocessedData = splitSkinType(preprocessedData);
+
 %% Save the results
 
 % Save location
