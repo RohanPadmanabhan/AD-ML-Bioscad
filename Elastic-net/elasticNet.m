@@ -57,7 +57,7 @@ clear catData contData
 %% Elastic net
 
 % Define constants
-nCross = 30;
+nCross = 100;
 testProportion = 0.2;
 valProportion = 0.25;
 mcid = 9;
@@ -65,7 +65,7 @@ mcid = 9;
 
 % Define alpha and lambda ranges
 alpha = 0.05:0.05:1;
-lambda = 10.^(-1:0.1:0.6);
+lambda = 10.^(-6:0.1:0.6);
 
 
 % Pre-allocate space for arrays used in loop
