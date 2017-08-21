@@ -17,16 +17,39 @@ load(fullFile);
 
 clear fullFile prefix extension rawData filename
 
-
-%% Extract SCORAD and the continuous data
-
+%% Extract objective SCORAD
 objSCORAD = preprocessedData.ObjectiveSCORAD;
 
+%% Extract the continuous data
 contDataStartCol = 19;
 [~, p] = size(preprocessedData);
 contData = table2array(preprocessedData(:, contDataStartCol:p));
 
-clear contDataStartCol p
+%% Extract the categorical data
+
+% Define start and end locations
+catDataStartCol = 2;
+catDataEndCol = 15;
+catData = preprocessedData(:, catDataStartCol:catDataEndCol);
+
+% Remove unncessary columns and convert to table
+catData.EtnicityChild = [];
+catData.FLG2282del4 = [];
+catData.FLGFailed = [];
+catData.FLGS3247X = [];
+catData.FLGNumberOfMutations = [];
+catData.FLGR2447X = [];
+catData.FLGR501X = [];
+catData.skinTypeOther = [];
+
+% Convert to table
+catData = table2array(catData);
+
+
+%% Combine the two to get the input data
+inpData = [catData, contData];
+
+clear contDataStartCol p catData contData catDataStartCol catDataEndCol
 
 
 %% Elastic net
@@ -53,7 +76,7 @@ tic
 parfor i = 1 : nCross
     
     % Split the data in to training and validation
-    [xTest, xTrainVal, yTest, yTrainVal] = splitData(contData, objSCORAD, testProportion);
+    [xTest, xTrainVal, yTest, yTrainVal] = splitData(inpData, objSCORAD, testProportion);
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
     % Try every combination of lambda and alpha
@@ -119,11 +142,11 @@ clear sumWeights weights
 %% Re-train the model with the final values of alpha and lambda
 
 % Train the model on the training data
-[coeffs, fitInfo] = lasso(contData, objSCORAD, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
+[coeffs, fitInfo] = lasso(inpData, objSCORAD, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
 coeffsFull = [fitInfo.Intercept; coeffs];
 
 % Predict the results
-yPred = [ones(size(contData, 1), 1), contData] * coeffsFull;
+yPred = [ones(size(inpData, 1), 1), inpData] * coeffsFull;
 yPred = yPred .* (yPred > 0);
 
 % Check the results against the originals
