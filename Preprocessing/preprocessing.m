@@ -67,14 +67,14 @@ preprocessedData = removeUnderfilledRows(preprocessedData, numDataStartCol, numD
 preprocessedData = removeUnderfilledColumns(preprocessedData, numDataStartCol, numDataEndCol, minimumFillPercentage);
 
 
-clear n i numDataStartCol numDataEndCol minimumFillPercentage
+clear n i numDataEndCol minimumFillPercentage
 
 
 %% Fill in data using KNN
 
 % Select only the continuous data
 [~,numDataEndCol] = size(preprocessedData);
-continuousData = table2array(preprocessedData(:, 2:numDataEndCol));
+continuousData = table2array(preprocessedData(:, numDataStartCol:numDataEndCol));
 
 % Replace NaNs using 3 nearest neighbours
 k = 3;
@@ -84,7 +84,7 @@ continuousData = transpose(knnimpute(transpose(continuousData), k));
 preprocessedData(:, 2:numDataEndCol) = array2table(continuousData);
 
 
-clear numDataEndCol k continuousData
+clear numDataEndCol k continuousData numDataStartCol
 
 
 %% Save the results
