@@ -156,7 +156,7 @@ sumWeights = sum(weights);
 alphaWeighted = sum(bestAlpha .* weights) / sumWeights;
 lambdaWeighted = sum(bestLambda .* weights) / sumWeights;
 
-clear sumWeights weights bestAlpha bestLambda
+clear sumWeights weights
 
 
 %% Re-train the model with the final values of alpha and lambda
