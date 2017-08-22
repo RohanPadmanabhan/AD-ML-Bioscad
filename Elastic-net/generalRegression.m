@@ -69,3 +69,23 @@ parfor i = 1:nCross
 end
 
 clear n nCross numTestCases testProportion
+
+%% Analyse the results
+
+% Flatten the matrix
+yTestFull = reshape(yTestFull, [], 1);
+yPredFull = reshape(yPredFull, [], 1);
+
+% Calculate the residuals
+residuals = yTestFull - yPredFull;
+
+% Test final performance
+predPerfFinal = rmse(yTestFull, yPredFull);
+predSuccFinal = proportionSuccessful(yTestFull, yPredFull, mcid);
+
+clear mcid
+
+%% Draw a scatter graph of the test results
+drawScatterPredictions(scoradType, yTestFull, yPredFull);
+
+clear scoradType
