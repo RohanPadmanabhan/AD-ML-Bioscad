@@ -19,8 +19,10 @@ load(inpFilepath);
 useObjSCORAD = 1;
 if useObjSCORAD
     outVals = preprocessedData.ObjectiveSCORAD;
+    scoradType = ' oSCORAD';
 else
     outVals = preprocessedData.TotalSCORAD;
+    scoradType = ' SCORAD';
 end
 
 % Select the input data
@@ -45,3 +47,4 @@ mcid = 9;
 predSucc = proportionSuccessful(yTest, yPred, mcid);
 
 %% Draw a scatter graph of the test results
+drawScatterPredictions(scoradType, yTest, yPred);
