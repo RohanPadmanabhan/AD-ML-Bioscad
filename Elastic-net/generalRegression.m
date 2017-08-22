@@ -7,10 +7,10 @@ clc
 
 
 %% Load the preprocessed data
-inpFilepath = input('Filepath for the data: ', 's');
+inpFilepath = input('Filepath for the input data: ', 's');
 load(inpFilepath);
 
-outFilepath = input('Filepath for the data: ', 's');
+outFilepath = input('Filepath to save results: ', 's');
 
 clear inpFilepath
 %% Select the data
