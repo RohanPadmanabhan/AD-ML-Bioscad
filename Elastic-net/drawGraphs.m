@@ -5,9 +5,20 @@ clear
 clc
 close all
 
-% Load the data as it would've existed
-load('post-ENET-variables.mat');
+%% Load the data
+inputFilepath = input('Data file path: ', 's');
+load(inputFilepath);
 
+
+%% Check if using objective or total scorad
+useObj = input('Use objective SCORAD? (1 or 0) ');
+
+% Extract the appropriate data
+if useObj
+    scoradType = ' oSCORAD';
+else
+    scoradType = ' totSCORAD';
+end
 
 %% Create boxplots to evaluate the model prediction
 
@@ -32,11 +43,11 @@ ylabel('Proportion successful predictions');
 %% Create graph to show prediction correlation
 
 % Plot the graph
-predVsAct = figure('name', 'Predicted vs Actual oSCORAD');
+predVsAct = figure('name', strcat('Predicted vs Actual ', scoradType));
 scatter(yTestFull, yPredFull, 'x');
-title('Model Predicted vs Actual oSCORAD');
-xlabel('Actual oSCORAD');
-ylabel('Predicted oSCORAD');
+title(strcat('Model Predicted vs Actual ', scoradType));
+xlabel(strcat('Actual ', scoradType));
+ylabel(strcat('Predicted ', scoradType));
 
 % Add upper reference lines
 upperLine = refline([1, 10]);
@@ -91,8 +102,8 @@ axis square
 %% Create graph to show prediction correlation
 
 % Plot the graph
-residualVsActual = figure('name', 'Residual vs Actual oSCORAD');
+residualVsActual = figure('name', strcat('Residual vs Actual ', scoradType));
 scatter(yTestFull, residuals, 'x');
-title('Residual vs Actual oSCORAD');
-xlabel('Actual oSCORAD');
-ylabel('Residual');
+title(strcat('Residual vs Actual ', scoradType));
+xlabel(strcat('Actual ', scoradType));
+ylabel(strcat('Residual ', scoradType));
