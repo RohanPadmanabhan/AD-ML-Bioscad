@@ -8,17 +8,26 @@ clc
 close all
 
 
-%% Load the data
-filename = 'combined-non-lesional';
-prefix = '../preprocessed-';
-extension = '.mat';
-fullFile = strcat(prefix, filename, extension);
-load(fullFile);
+%% Load the data and get the file names
+inputFilename = input('Enter the input file path: ', 's');
+load(inputFilename);
 
-clear fullFile prefix extension rawData filename
+outputFileName = input('Enter the output file path: ', 's');
 
-%% Extract objective SCORAD
-objSCORAD = preprocessedData.ObjectiveSCORAD;
+clear fullFile prefix extension rawData inputFilename
+
+%% Extract the output data
+
+% Determine whether to use objective or total SCORAD
+useObj = input('Use objective SCORAD? (1 or 0) ');
+
+% Extract the appropriate data
+if useObj
+    outData = preprocessedData.ObjectiveSCORAD;
+else
+    outData = preprocessedData.TotalSCORAD;
+end
+
 
 %% Extract the continuous data
 contDataStartCol = 19;
@@ -61,7 +70,7 @@ nCross = 100;
 testProportion = 0.2;
 valProportion = 0.25;
 mcid = 9;
-[n, ~] = size(objSCORAD);
+[n, ~] = size(outData);
 
 % Define alpha and lambda ranges
 alpha = 0.05:0.05:1;
@@ -84,7 +93,7 @@ tic
 parfor i = 1 : nCross
     
     % Split the data in to training and validation
-    [xTest, xTrainVal, yTest, yTrainVal] = splitData(inpData, objSCORAD, testProportion);
+    [xTest, xTrainVal, yTest, yTrainVal] = splitData(inpData, outData, testProportion);
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
     % Try every combination of lambda and alpha
@@ -162,10 +171,12 @@ clear sumWeights weights
 %% Re-train the model with the final values of alpha and lambda
 
 % Train the model on the training data
-[coeffs, fitInfo] = lasso(inpData, objSCORAD, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
+[coeffs, fitInfo] = lasso(inpData, outData, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
 coeffsFull = [fitInfo.Intercept; coeffs];
 
 clear mcid bl blFull fitInfo testProportion xTest xTrain yTrain coeffs
 
 %% Save the results
-save('post-ENET-variables.mat');
+save(outputFileName);
+
+clear outputFileName
