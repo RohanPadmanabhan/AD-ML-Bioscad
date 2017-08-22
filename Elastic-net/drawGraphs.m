@@ -41,32 +41,7 @@ ylabel('Proportion successful predictions');
 
 
 %% Create graph to show prediction correlation
-
-% Plot the graph
-predVsAct = figure('name', strcat('Predicted vs Actual ', scoradType));
-scatter(yTestFull, yPredFull, 'x');
-title(strcat('Model Predicted vs Actual ', scoradType));
-xlabel(strcat('Actual ', scoradType));
-ylabel(strcat('Predicted ', scoradType));
-
-% Add upper reference lines
-upperLine = refline([1, 10]);
-upperLine.Color = 'r';
-upperLine.LineStyle = '--';
-
-% Add middle reference lines
-middleLine = refline([1, 0]);
-middleLine.Color = 'r';
-
-% Add lower reference lines
-lowerLine = refline([1, -10]);
-lowerLine.Color = 'r';
-lowerLine.LineStyle = '--';
-
-% Set the axes
-maxAxis = max(max(yTestFull), max(yPredFull));
-axis([0, maxAxis, 0, maxAxis]);
-axis square
+drawScatterPredictions(scoradType, yTestFull, yPredFull);
 
 
 %% Create graphs to show alpha and lambda performance
@@ -99,7 +74,7 @@ xlabel('Lambda');
 ylabel('RMSE');
 axis square
 
-%% Create graph to show prediction correlation
+%% Create graph to show residuals
 
 % Plot the graph
 residualVsActual = figure('name', strcat('Residual vs Actual ', scoradType));
