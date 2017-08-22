@@ -153,6 +153,10 @@ yPredFull = reshape(yPredFull, [], 1);
 % Calculate the residuals
 residuals = yTestFull - yPredFull;
 
+% Test final performance
+predPerfFinal = rmse(yTestFull, yPredFull);
+predSuccFinal = proportionSuccessful(yTestFull, yPredFull, mcid);
+
 %% Find the mean alpha and lambda
 
 % Find the unweighted mean
