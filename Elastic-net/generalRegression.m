@@ -7,16 +7,17 @@ clc
 
 
 %% Load the preprocessed data
-%inpFilepath = input('Filepath for the data: ', 's');
-inpFilepath = '../preprocessed-combined-non-lesional.mat';
+inpFilepath = input('Filepath for the data: ', 's');
 load(inpFilepath);
+
+outFilepath = input('Filepath for the data: ', 's');
 
 clear inpFilepath
 %% Select the data
 
 % Select the output data
-%useObjSCORAD = input('Use objective SCORAD? (1 or 0) ');
-useObjSCORAD = 1;
+useObjSCORAD = input('Use objective SCORAD? (1 or 0) ');
+
 if useObjSCORAD
     outVals = preprocessedData.ObjectiveSCORAD;
     scoradType = ' oSCORAD';
@@ -84,6 +85,9 @@ predPerfFinal = rmse(yTestFull, yPredFull);
 predSuccFinal = proportionSuccessful(yTestFull, yPredFull, mcid);
 
 clear mcid
+
+%% Save the data to file
+save(outFilepath);
 
 %% Draw a scatter graph of the test results
 drawScatterPredictions(scoradType, yTestFull, yPredFull);
