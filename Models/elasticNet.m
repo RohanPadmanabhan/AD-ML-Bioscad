@@ -17,17 +17,7 @@ outputFileName = input('Enter the output file path: ', 's');
 clear fullFile prefix extension rawData inputFilename
 
 %% Extract the output data
-
-% Determine whether to use objective or total SCORAD
-useObj = input('Use objective SCORAD? (1 or 0) ');
-
-% Extract the appropriate data
-if useObj
-    outData = preprocessedData.ObjectiveSCORAD;
-else
-    outData = preprocessedData.TotalSCORAD;
-end
-
+[outData, mcid, ~] = extractOutputs(preprocessedData);
 
 %% Extract the continuous data
 contDataStartCol = 19;
@@ -69,13 +59,11 @@ clear catData contData
 nCross = 100;
 testProportion = 0.2;
 valProportion = 0.25;
-mcid = 9;
 [n, ~] = size(outData);
 
 % Define alpha and lambda ranges
 alpha = 0.05:0.05:1;
 lambda = 10.^(-6:0.1:0.6);
-
 
 % Pre-allocate space for arrays used in loop
 bestLambda = zeros(nCross, 1);
@@ -141,21 +129,12 @@ end
 
 toc
 
-
 clear i nCross valProportion alpha lambda
 
-%% Reshape the predictions and results in to a 1D matrix
+%% Analyse the results
+[yTestFull, yPredFull, residuals, predPerfFinal, predSuccFinal] = analyseResults(yTestFull, yPredFull, mcid);
 
-% Flatten the matrix
-yTestFull = reshape(yTestFull, [], 1);
-yPredFull = reshape(yPredFull, [], 1);
-
-% Calculate the residuals
-residuals = yTestFull - yPredFull;
-
-% Test final performance
-predPerfFinal = rmse(yTestFull, yPredFull);
-predSuccFinal = proportionSuccessful(yTestFull, yPredFull, mcid);
+clear mcid
 
 %% Find the mean alpha and lambda
 
