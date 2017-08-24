@@ -5,6 +5,7 @@ close all
 clear
 clc
 
+addpath('Utils/');
 
 %% Load the preprocessed data
 inpFilepath = input('Filepath for the input data: ', 's');

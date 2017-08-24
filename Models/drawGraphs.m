@@ -5,6 +5,8 @@ clear
 clc
 close all
 
+addpath('Utils/');
+
 %% Load the data
 inputFilepath = input('Data file path: ', 's');
 load(inputFilepath);
