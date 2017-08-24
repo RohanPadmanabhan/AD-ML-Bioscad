@@ -13,14 +13,7 @@ load(inputFilepath);
 
 
 %% Check if using objective or total scorad
-useObj = input('Use objective SCORAD? (1 or 0) ');
-
-% Extract the appropriate data
-if useObj
-    scoradType = ' oSCORAD';
-else
-    scoradType = ' totSCORAD';
-end
+[~, ~, scoradType] = extractOutputs(preprocessedData);
 
 %% Create boxplots to evaluate the model prediction
 
