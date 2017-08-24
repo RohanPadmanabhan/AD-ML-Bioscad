@@ -1,4 +1,4 @@
-function [yTestFull, yPredFull, residuals, predPerf, predSucc] = analyseResults(yTestFull, yPredFull)
+function [yTestFull, yPredFull, residuals, predPerf, predSucc] = analyseResults(yTestFull, yPredFull, mcid)
 
 %% Analyse the results for unflattened data from parallelised regression
 
