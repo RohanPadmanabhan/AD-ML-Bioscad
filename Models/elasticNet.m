@@ -95,9 +95,7 @@ parfor i = 1 : nCross
             coeffsFull = [fitInfo.Intercept; coeffs];
             
             % Predict the values
-            yPred = [ones(size(xVal, 1), 1), xVal] * coeffsFull;
-            yPred = yPred .* (yPred > 0);
-            yPred = replaceHighValues(yPred, maxSCORAD);
+            yPred = elasticNetCoeffsPred(coeffsFull, xVal, maxSCORAD);
             
             % Validate the model using validation set
             diffs(l,a) = rmse(yVal, yPred);
@@ -118,10 +116,7 @@ parfor i = 1 : nCross
     coeffsFull = [fitInfo.Intercept; coeffs];
     
     % Predict the values using the newly trained model
-    yPred = [ones(size(xTest, 1), 1), xTest] * coeffsFull;
-    yPred = yPred .* (yPred > 0);
-    yPred = replaceHighValues(yPred, maxSCORAD);
-    
+    yPred = elasticNetCoeffsPred(coeffsFull, xTest, maxSCORAD);   
     
     % Asses the performance
     predPerf(i) = rmse(yTest, yPred);
