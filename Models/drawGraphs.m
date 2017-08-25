@@ -13,7 +13,7 @@ load(inputFilepath);
 
 
 %% Check if using objective or total scorad
-[~, ~, scoradType] = extractOutputs(preprocessedData);
+[~, ~, ~, scoradType] = extractOutputs(preprocessedData);
 
 %% Create boxplots to evaluate the model prediction
 

@@ -18,7 +18,7 @@ outputFileName = input('Enter the output file path: ', 's');
 clear fullFile prefix extension rawData inputFilename
 
 %% Extract the output data
-[outData, mcid, ~] = extractOutputs(preprocessedData);
+[outData, mcid, maxSCORAD, ~] = extractOutputs(preprocessedData);
 
 %% Extract the continuous data
 contDataStartCol = 19;

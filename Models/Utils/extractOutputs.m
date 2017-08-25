@@ -1,4 +1,4 @@
-function [outData, mcid, scoradType] = extractOutputs(tabularDataSet) 
+function [outData, mcid, maxSCORAD, scoradType] = extractOutputs(tabularDataSet)
 
 %% Extract the output data
 
@@ -9,9 +9,11 @@ useObj = input('Use objective SCORAD? (1 or 0) ');
 if useObj
     outData = tabularDataSet.ObjectiveSCORAD;
     mcid = 9;
+    maxSCORAD = 83;
     scoradType = ' oSCORAD';
 else
     outData = tabularDataSet.TotalSCORAD;
     mcid = 10;
+    maxSCORAD = 103;
     scoradType = ' totSCORAD';
 end

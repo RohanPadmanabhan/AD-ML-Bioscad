@@ -17,7 +17,7 @@ clear inpFilepath
 %% Select the data
 
 % Select the output data
-[outVals, mcid, scoradType] = extractOutputs(preprocessedData);
+[outVals, mcid, maxSCORAD, scoradType] = extractOutputs(preprocessedData);
 
 % Select the input data
 inpVals = [preprocessedData.IL_1a, preprocessedData.IL_1_];

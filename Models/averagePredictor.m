@@ -19,7 +19,7 @@ outputFileName = input('Enter the output file path: ', 's');
 clear fullFile prefix extension rawData inputFilename
 
 %% Extract the output data
-[outData, mcid, scoradType] = extractOutputs(preprocessedData);
+[outData, mcid, ~, scoradType] = extractOutputs(preprocessedData);
 
 %% Average prediction
 
