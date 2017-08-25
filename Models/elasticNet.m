@@ -94,9 +94,12 @@ parfor i = 1 : nCross
             [coeffs, fitInfo] = lasso(xTrain, yTrain, 'Lambda', lambda(l), 'Alpha', alpha(a));
             coeffsFull = [fitInfo.Intercept; coeffs];
             
-            % Validate the model on validation data
+            % Predict the values
             yPred = [ones(size(xVal, 1), 1), xVal] * coeffsFull;
             yPred = yPred .* (yPred > 0);
+            yPred = replaceHighValues(yPred, maxSCORAD);
+            
+            % Validate the model using validation set
             diffs(l,a) = rmse(yVal, yPred);
         end
     end
@@ -117,6 +120,8 @@ parfor i = 1 : nCross
     % Predict the values using the newly trained model
     yPred = [ones(size(xTest, 1), 1), xTest] * coeffsFull;
     yPred = yPred .* (yPred > 0);
+    yPred = replaceHighValues(yPred, maxSCORAD);
+    
     
     % Asses the performance
     predPerf(i) = rmse(yTest, yPred);
@@ -130,7 +135,7 @@ end
 
 toc
 
-clear i nCross valProportion alpha lambda
+clear i nCross valProportion alpha lambda maxSCORAD
 
 %% Analyse the results
 [yTestFull, yPredFull, residuals, predPerfFinal, predSuccFinal] = analyseResults(yTestFull, yPredFull, mcid);
