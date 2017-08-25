@@ -53,7 +53,7 @@ parfor i = 1:nCross
     % Remove high and low values from prediction
     yPred = yPred .* (yPred > 0);
     yPred = replaceHighValues(yPred, maxSCORAD);
-    s
+    
     % Save the results
     yPredFull(i, :) = yPred;
     yTestFull(i, :) = yTest;
