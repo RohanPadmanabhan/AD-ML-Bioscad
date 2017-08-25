@@ -28,26 +28,7 @@ contData = table2array(preprocessedData(:, contDataStartCol:p));
 clear contDataStartCol p
 
 %% Extract the categorical data
-
-% Define start and end locations
-catDataStartCol = 2;
-catDataEndCol = 15;
-catData = preprocessedData(:, catDataStartCol:catDataEndCol);
-
-% Remove unncessary columns and convert to table
-catData.EtnicityChild = [];
-catData.FLG2282del4 = [];
-catData.FLGFailed = [];
-catData.FLGS3247X = [];
-catData.FLGNumberOfMutations = [];
-catData.FLGR2447X = [];
-catData.FLGR501X = [];
-catData.skinTypeOther = [];
-
-% Convert to table
-catData = table2array(catData);
-
-clear catDataStartCol catDataEndCol
+catData = extractCategoricalData(preprocessedData);
 
 %% Combine the two to get the input data
 inpData = [catData, contData];
@@ -81,7 +62,7 @@ tic
 
 parfor i = 1 : nCross
     
-    % Split the data in to training and validation
+    % Split the data in totesting, training, and validation
     [xTest, xTrainVal, yTest, yTrainVal] = splitData(inpData, outData, testProportion);
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
