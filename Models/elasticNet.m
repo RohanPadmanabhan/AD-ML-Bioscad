@@ -32,7 +32,7 @@ catData = extractCategoricalData(preprocessedData);
 
 %% Combine the two to get the input data
 inpData = [catData, contData];
-varNames = inpData.Properties.VariableNames;
+varNames = ['Constant', inpData.Properties.VariableNames];
 inpData = table2array(inpData);
 
 clear catData contData
@@ -113,7 +113,7 @@ end
 
 toc
 
-clear i nCross valProportion alpha lambda maxSCORAD
+clear i nCross valProportion alpha lambda maxSCORAD n
 
 %% Analyse the results
 [yTestFull, yPredFull, residuals, predPerfFinal, predSuccFinal] = analyseResults(yTestFull, yPredFull, mcid);
@@ -141,7 +141,7 @@ clear sumWeights weights
 [coeffs, fitInfo] = lasso(inpData, outData, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
 coeffsFull = [fitInfo.Intercept; coeffs];
 
-clear mcid bl blFull fitInfo testProportion xTest xTrain yTrain coeffs
+clear mcid bl blFull fitInfo testProportion xTest xTrain yTrain coeffs inpData outData
 
 %% Save the results
 save(outputFileName);
