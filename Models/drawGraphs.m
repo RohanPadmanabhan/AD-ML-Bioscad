@@ -60,7 +60,6 @@ xlabel('Alpha');
 ylabel('RMSE');
 axis square
 
-
 % Draw a 2D alpha vs RMSE plot
 subplot(1,3,3);
 scatter(bestLambda, predPerf, 'x');
@@ -77,3 +76,12 @@ scatter(yTestFull, residuals, 'x');
 title(strcat('Residual vs Actual ', scoradType));
 xlabel(strcat('Actual ', scoradType));
 ylabel(strcat('Residual ', scoradType));
+
+
+%% Draw coefficients plot
+
+coeffsBar = figure('name', 'Coefficient values');
+set(gcf, 'Position', [100, 800, 1200, 400])
+varNames = categorical(varNames);
+bar(varNames, coeffsFull);
+title('Coefficient values');
