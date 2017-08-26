@@ -23,7 +23,7 @@ clear fullFile prefix extension rawData inputFilename
 %% Extract the continuous data
 contDataStartCol = 19;
 [~, p] = size(preprocessedData);
-contData = table2array(preprocessedData(:, contDataStartCol:p));
+contData = preprocessedData(:, contDataStartCol:p);
 
 clear contDataStartCol p
 
@@ -32,6 +32,8 @@ catData = extractCategoricalData(preprocessedData);
 
 %% Combine the two to get the input data
 inpData = [catData, contData];
+varNames = inpData.Properties.VariableNames;
+inpData = table2array(inpData);
 
 clear catData contData
 

@@ -14,6 +14,3 @@ catData.FLGNumberOfMutations = [];
 catData.FLGR2447X = [];
 catData.FLGR501X = [];
 catData.skinTypeOther = [];
-
-% Convert to table
-catData = table2array(catData);
