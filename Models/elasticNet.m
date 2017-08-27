@@ -116,7 +116,7 @@ toc
 clear i nCross valProportion alpha lambda maxSCORAD n
 
 %% Analyse the results
-[yTestFull, yPredFull, residuals, predPerfFinal, predSuccFinal] = analyseResults(yTestFull, yPredFull, mcid);
+[yTestFull, yPredFull, ~, predPerfFinal, predSuccFinal] = analyseResults(yTestFull, yPredFull, mcid);
 
 clear mcid
 
@@ -140,6 +140,10 @@ clear sumWeights weights
 % Train the model on the training data
 [coeffs, fitInfo] = lasso(inpData, outData, 'Lambda', lambdaWeighted, 'Alpha', alphaWeighted);
 coeffsFull = [fitInfo.Intercept; coeffs];
+
+% Predict the values using the newly trained model
+yPred = elasticNetCoeffsPred(coeffsFull, inpData, maxSCORAD);
+residuals = outData - yPred;
 
 clear mcid bl blFull fitInfo testProportion xTest xTrain yTrain coeffs inpData outData
 
