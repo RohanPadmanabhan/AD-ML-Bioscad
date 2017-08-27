@@ -113,7 +113,7 @@ end
 
 toc
 
-clear i nCross valProportion alpha lambda maxSCORAD n
+clear i nCross valProportion alpha lambda n testProportion valProportion numTestCases
 
 %% Analyse the results
 [yTestFull, yPredFull, ~, predPerfFinal, predSuccFinal] = analyseResults(yTestFull, yPredFull, mcid);
@@ -145,7 +145,8 @@ coeffsFull = [fitInfo.Intercept; coeffs];
 yPred = elasticNetCoeffsPred(coeffsFull, inpData, maxSCORAD);
 residuals = outData - yPred;
 
-clear mcid bl blFull fitInfo testProportion xTest xTrain yTrain coeffs inpData outData
+clear mcid bl blFull fitInfo xTest xTrain yTrain coeffs inpData outData maxSCORAD
+
 
 %% Save the results
 save(outputFileName);
