@@ -145,7 +145,7 @@ coeffsFull = [fitInfo.Intercept; coeffs];
 yPred = elasticNetCoeffsPred(coeffsFull, inpData, maxSCORAD);
 residuals = outData - yPred;
 
-clear mcid bl blFull fitInfo xTest xTrain yTrain coeffs inpData outData maxSCORAD
+clear mcid bl blFull fitInfo xTest xTrain yTrain coeffs maxSCORAD yPred
 
 
 %% Save the results
