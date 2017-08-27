@@ -72,7 +72,7 @@ axis square
 
 % Plot the graph
 residualVsActual = figure('name', strcat('Residual vs Actual ', scoradType));
-scatter(yTestFull, residuals, 'x');
+scatter(outData, residuals, 'x');
 title(strcat('Residual vs Actual ', scoradType));
 xlabel(strcat('Actual ', scoradType));
 ylabel(strcat('Residual ', scoradType));
