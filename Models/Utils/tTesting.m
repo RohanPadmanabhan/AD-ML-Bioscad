@@ -48,15 +48,12 @@ clear predsPerCross
 
 %% Calculate the accuracy of each model
 
+% Calculate the accuracy of each cross validation iteration
 meanAcc = modelAccuracy(meanVals, yTestFull, mcid);
 modelAcc = modelAccuracy(yPredFull, yTestFull, mcid);
 
-%% Calculate the t-tests interval
+%% Carry out the rank-sum test
 
-% Calculate the difference between the predictions and average
-diffs = modelAcc - meanAcc;
-
-% Carry out the t-test
 [p, h] = ranksum(modelAcc, meanAcc);
 
 
