@@ -40,10 +40,6 @@ meanVals = reshape(meanVals, [], 1);
 
 clear predsPerCross
 
-meanVals = meanVals(1:20);
-yPredFull = yPredFull(1:20);
-
-
 %% Calculate the t-tests interval
 [p, h] = ranksum(yPredFull, meanVals);
 
