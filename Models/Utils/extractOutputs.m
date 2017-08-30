@@ -7,12 +7,20 @@ useObj = input('Use objective SCORAD? (1 or 0) ');
 
 % Extract the appropriate data
 if useObj
-    outData = tabularDataSet.ObjectiveSCORAD;
+    try
+        outData = tabularDataSet.ObjectiveSCORAD;
+    catch
+        outData = NaN;
+    end
     mcid = 9;
     maxSCORAD = 83;
     scoradType = ' oSCORAD';
 else
-    outData = tabularDataSet.TotalSCORAD;
+    try
+        outData = tabularDataSet.TotalSCORAD;
+    catch
+        outData = NaN;
+    end
     mcid = 10;
     maxSCORAD = 103;
     scoradType = ' totSCORAD';
