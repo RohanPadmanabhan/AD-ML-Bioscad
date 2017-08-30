@@ -7,8 +7,7 @@ clc
 
 %% Load the data and remove unnecesary variables
 
-filePath = '../Results/oSCORAD-logged.mat';
-%input(' Enter the results filename: ', 's');
+filePath = input(' Enter the results filename: ', 's');
 load(filePath);
 clearvars -except yTestFull yPredFull
 
@@ -41,7 +40,15 @@ meanVals = reshape(meanVals, [], 1);
 
 clear predsPerCross
 
+meanVals = meanVals(1:20);
+yPredFull = yPredFull(1:20);
 
-%% Calculate the t-tests
 
-[h,p,ci,stats] = ttest(yPredFull, meanVals);
+%% Calculate the t-tests interval
+[p, h] = ranksum(yPredFull, meanVals);
+
+if (h)
+    disp(['The values are different from the average. Statistical significance of: ', num2str(p)]);
+else
+    disp(['The values are the same as the average. Statistical significance of: ', num2str(p)]);
+end
