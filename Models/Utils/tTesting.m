@@ -1,0 +1,47 @@
+%% Calculate tTests for each sample
+
+% Clean slate
+clear
+close all
+clc
+
+%% Load the data and remove unnecesary variables
+
+filePath = '../Results/oSCORAD-logged.mat';
+%input(' Enter the results filename: ', 's');
+load(filePath);
+clearvars -except yTestFull yPredFull
+
+clear filePath
+
+%% Reshape the matric
+
+% Number of CV iterations
+nCross = 100;
+
+% Total number of data points
+n = length(yTestFull);
+
+% Predictions per crossvalidation iteration
+predsPerCross = n / nCross;
+
+% Reshape the matrix to it's original form
+yTestFull = reshape(yTestFull, [], predsPerCross);
+
+clear n nCross
+
+%% Calculate the means
+
+% Calculate the mean for each row
+meanVals = mean(transpose(yTestFull));
+
+% Repeat the mean and reshape the matrix
+meanVals = repmat(meanVals, predsPerCross, 1);
+meanVals = reshape(meanVals, [], 1);
+
+clear predsPerCross
+
+
+%% Calculate the t-tests
+
+[h,p,ci,stats] = ttest(yPredFull, meanVals);
