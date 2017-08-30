@@ -8,14 +8,12 @@ clc
 %% Load the data and remove unnecesary variables
 
 % Load the data file
-filePath = '../Results/oSCORAD-logged.mat';
-%filePath = input(' Enter the results filename: ', 's');
+filePath = input(' Enter the results filename: ', 's');
 load(filePath);
 clearvars -except yTestFull yPredFull
 
 % Get mcid
-mcid = 9;
-%[~, mcid, ~, ~] = extractOutputs();
+[~, mcid, ~, ~] = extractOutputs();
 
 clear filePath
 
