@@ -17,8 +17,6 @@ clearvars -except yTestFull yPredFull
 mcid = 9;
 %[~, mcid, ~, ~] = extractOutputs();
 
-
-
 clear filePath
 
 %% Reshape the matric
@@ -32,8 +30,9 @@ n = length(yTestFull);
 % Predictions per crossvalidation iteration
 predsPerCross = n / nCross;
 
-% Reshape the matrix to it's original form
+% Reshape the matrices to their original form
 yTestFull = reshape(yTestFull, [], predsPerCross);
+yPredFull = reshape(yPredFull, [], predsPerCross);
 
 clear n nCross
 
@@ -43,21 +42,22 @@ clear n nCross
 meanVals = mean(transpose(yTestFull));
 
 % Repeat the mean and reshape the matrix
-meanVals = repmat(meanVals, predsPerCross, 1);
-meanVals = reshape(meanVals, [], 1);
+meanVals = transpose(repmat(meanVals, predsPerCross, 1));
 
 clear predsPerCross
+
+%% Calculate the accuracy of each model
+
+meanAcc = modelAccuracy(meanVals, yTestFull, mcid);
+modelAcc = modelAccuracy(yPredFull, yTestFull, mcid);
 
 %% Calculate the t-tests interval
 
 % Calculate the difference between the predictions and average
-diffs = yPredFull - meanVals;
-
-% Replace values within mcid with 0
-diffs = diffs .* (diffs > mcid | diffs < -mcid);
+diffs = modelAcc - meanAcc;
 
 % Carry out the t-test
-[h, p] = ttest(diffs);
+[p, h] = ranksum(modelAcc, meanAcc);
 
 
 %% Display the results
