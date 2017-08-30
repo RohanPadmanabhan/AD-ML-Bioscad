@@ -52,13 +52,13 @@ modelAcc = modelAccuracy(yPredFull, yTestFull, mcid);
 
 %% Carry out the rank-sum test
 
-[p, h] = ranksum(modelAcc, meanAcc);
+[p, h] = ranksum(modelAcc, meanAcc, 'tail', 'right');
 
 
 %% Display the results
 
 if (h)
-    disp(['The values are different from the average. Statistical significance of: ', num2str(p)]);
+    disp(['The values are better than average. Statistical significance of: ', num2str(p)]);
 else
     disp(['The values are the same as the average. Statistical significance of: ', num2str(p)]);
 end
