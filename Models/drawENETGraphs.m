@@ -72,14 +72,7 @@ ylabel('RMSE');
 
 %% Create graph to show residuals
 
-% Plot the graph
-residualVsActual = figure('name', strcat('Residual vs Actual ', scoradType));
-scatter(outData, residuals, 'x');
-
-% Labels
-title(strcat('Residual vs Actual ', scoradType));
-xlabel(strcat('Actual ', scoradType));
-ylabel(strcat('Residual ', scoradType));
+drawResidualGraph(outData, residuals, scoradType);
 
 
 %% Draw coefficients plot
