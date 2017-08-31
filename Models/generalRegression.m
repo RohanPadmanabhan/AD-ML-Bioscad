@@ -73,10 +73,3 @@ residuals = outVals - yPred;
 
 %% Save the data to file
 save(outFilepath);
-
-%% Draw a graphs of the test results
-drawScatterPredictions(scoradType, yTestFull, yPredFull);
-drawResidualGraph(outVals, residuals, scoradType);
-drawCoefficientPlot(coeffs, varNames);
-
-clear scoradType
