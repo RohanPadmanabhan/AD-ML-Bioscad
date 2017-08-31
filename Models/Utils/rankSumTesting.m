@@ -32,7 +32,7 @@ predsPerCross = n / nCross;
 yTestFull = reshape(yTestFull, [], predsPerCross);
 yPredFull = reshape(yPredFull, [], predsPerCross);
 
-clear n nCross
+clear n
 
 %% Calculate the means
 
@@ -50,15 +50,28 @@ clear predsPerCross
 meanAcc = modelAccuracy(meanVals, yTestFull, mcid);
 modelAcc = modelAccuracy(yPredFull, yTestFull, mcid);
 
-%% Carry out the rank-sum test
 
-[p, h] = ranksum(modelAcc, meanAcc, 'tail', 'right');
+%% Calculate the RMSE
 
+% Preallocate space for results
+modelRMSE = zeros(1,100);
+meanRMSE = zeros(1,100);
+
+% Calculate the RMSE for each cross validation
+parfor i=1:nCross
+    modelRMSE(i) = rmse(yTestFull(i,:), yPredFull(i,:));
+    meanRMSE(i) = rmse(yTestFull(i,:), meanVals(i,:));   
+end
+
+clear nCross
+%% Carry out the significance tests
+
+% Test the model accuracy is greater than the mean accuracy
+[pAcc, hAcc] = ranksum(modelAcc, meanAcc, 'tail', 'right');
+
+% Test that the model RMSE is less than the mean RMSE
+[hRMSE, pRMSE] = ttest(modelRMSE, meanRMSE, 'tail', 'left');
 
 %% Display the results
-
-if (h)
-    disp(['The values are better than average. Statistical significance of: ', num2str(p)]);
-else
-    disp(['The values are the same as the average. Statistical significance of: ', num2str(p)]);
-end
+displaySignificance(hAcc, pAcc, 'accuracy');
+displaySignificance(hRMSE, pRMSE, 'RMSE');
