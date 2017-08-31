@@ -20,7 +20,11 @@ clear inpFilepath
 [outVals, mcid, maxSCORAD, scoradType] = extractOutputs(preprocessedData);
 
 % Select the input data
-inpVals = [preprocessedData.IL_1a, preprocessedData.IL_1_];
+catData = extractCategoricalData(preprocessedData);
+varNames = ['Constant', catData.Properties.VariableNames, 'IL_1a', 'IL_1_'];
+inpVals = [table2array(catData), preprocessedData.IL_1a, preprocessedData.IL_1_];
+
+clear catData
 
 %% Train on multiple subsets
 
@@ -42,17 +46,8 @@ parfor i = 1:nCross
     % Split the data
     [xTest, xTrain, yTest, yTrain] = splitData(inpVals, outVals, testProportion);
     
-    % Train the model
-    model = fitglm(xTrain, yTrain);
-    
-    % Predict results using model
-    coeffs = model.Coefficients.Estimate;
-    [n, ~] = size(yTest);
-    yPred = [ones(n,1), xTest] * coeffs;
-    
-    % Remove high and low values from prediction
-    yPred = yPred .* (yPred > 0);
-    yPred = replaceHighValues(yPred, maxSCORAD);
+    % Train and predict using general regression
+    [~, yPred] = genRegTrainPred(xTrain, yTrain, xTest, yTest, maxSCORAD);
     
     % Save the results
     yPredFull(i, :) = yPred;
@@ -66,14 +61,22 @@ end
 clear n nCross numTestCases testProportion
 
 %% Analyse the results
-[yTestFull, yPredFull, residuals, predPerfFinal, predSuccFinal] = analyseResults(yTestFull, yPredFull, mcid);
+[yTestFull, yPredFull, ~, predPerfFinal, predSuccFinal] = analyseResults(yTestFull, yPredFull, mcid);
 
 clear mcid
+
+
+%% Train and test model on all the data
+[coeffs, yPred] = genRegTrainPred(inpVals, outVals, inpVals, outVals, maxSCORAD);
+residuals = outVals - yPred;
+
 
 %% Save the data to file
 save(outFilepath);
 
-%% Draw a scatter graph of the test results
+%% Draw a graphs of the test results
 drawScatterPredictions(scoradType, yTestFull, yPredFull);
+drawResidualGraph(outVals, residuals, scoradType);
+drawCoefficientPlot(coeffs, varNames);
 
 clear scoradType
