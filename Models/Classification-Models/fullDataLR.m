@@ -25,7 +25,7 @@ outData = double(outData > 0);
 [inpData, varNames] = extractCombinedInpData(preprocessedData);
 
 %% Perform logistic regression
-lRRes = logisticRegression(inpData, outData);
-lRRes.varNames = varNames;
+fullDataRes = logisticRegression(inpData, outData);
+fullDataRes.varNames = varNames;
 
 clear varNames outData inpData
