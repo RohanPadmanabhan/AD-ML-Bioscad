@@ -57,7 +57,10 @@ clear n nCross numTestCases testProportion valProportion
 [yTestFull, yPredFull, ~, ~, predSuccFinal] = analyseResults(yTestFull, yPredFull, 0);
 
 % Calculate the weighted mean
-thresholdFinal = sum(bestThresholds .* predSucc) / sum(predSucc);
+nonExtremeLocs = (bestThresholds > 0) & (bestThresholds < 1);
+nonExtrThresh = bestThresholds(nonExtremeLocs);
+nonExtrWeights = predSucc(nonExtremeLocs);
+thresholdFinal = sum(nonExtrThresh .* nonExtrWeights) / sum(nonExtrWeights);
 
 %% Save the results in a struct
 fullResults = struct();
