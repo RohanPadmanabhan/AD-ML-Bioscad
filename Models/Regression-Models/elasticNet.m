@@ -7,7 +7,7 @@ clear
 clc
 close all
 
-addpath('Utils/');
+addpath('../Utils/');
 
 %% Load the data and get the file names
 inputFilename = input('Enter the input file path: ', 's');
