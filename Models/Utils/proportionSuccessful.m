@@ -9,5 +9,5 @@ function [percentage] = proportionSuccessful(actual, predictions, allowedDiff)
 % Output 1 : The proportion of values that had less than the allowable
 %            difference
 
-successes = abs(actual - predictions) < allowedDiff;
+successes = abs(actual - predictions) <= allowedDiff;
 percentage = sum(successes) / length(successes); 
