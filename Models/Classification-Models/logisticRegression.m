@@ -4,7 +4,7 @@ addpath('../Utils/');
 
 % Define constants
 nCross = 100;
-testProportion = 0.2;    
+testProportion = 0.2;
 valProportion = 0.25;
 
 % Pre-allocate space for 2D results arrays
@@ -19,15 +19,17 @@ yTestFull = zeros(nCross, numTestCases);
 
 tic
 
+
 % Cross-validate
-parfor i = 1 : nCross
+for i = 1 : nCross
     
     % Split the data in totesting, training, and validation
     [xTest, xTrainVal, yTest, yTrainVal] = splitData(inpData, outData, testProportion);
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
     % Train the model and predict the validation data
-    [coeffs, yPredVal] = genRegTrainPred(xTrain, yTrain, xVal, 1);
+    coeffs = glmfit(xTrain, yTrain,'binomial','link','probit');
+    yPredVal = genRegPred(coeffs, xVal, 1);   
     
     % Find the best threshold value
     bestThresholds(i) = findBestThreshold(yPredVal, yVal);
