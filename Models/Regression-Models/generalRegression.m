@@ -47,7 +47,7 @@ parfor i = 1:nCross
     [xTest, xTrain, yTest, yTrain] = splitData(inpVals, outVals, testProportion);
     
     % Train and predict using general regression
-    [~, yPred] = genRegTrainPred(xTrain, yTrain, xTest, yTest, maxSCORAD);
+    [~, yPred] = genRegTrainPred(xTrain, yTrain, xTest, maxSCORAD);
     
     % Save the results
     yPredFull(i, :) = yPred;
@@ -67,7 +67,7 @@ clear mcid
 
 
 %% Train and test model on all the data
-[coeffs, yPred] = genRegTrainPred(inpVals, outVals, inpVals, outVals, maxSCORAD);
+[coeffs, yPred] = genRegTrainPred(inpVals, outVals, inpVals, maxSCORAD);
 residuals = outVals - yPred;
 
 

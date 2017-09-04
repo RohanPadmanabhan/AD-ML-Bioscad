@@ -1,4 +1,4 @@
-function [coeffs, yPred] = genRegTrainPred(xTrain, yTrain, xTest, yTest, maxSCORAD)
+function [coeffs, yPred] = genRegTrainPred(xTrain, yTrain, xTest, maxSCORAD)
 
 
 % Train the model
@@ -6,7 +6,7 @@ model = fitglm(xTrain, yTrain);
 
 % Predict results using model
 coeffs = model.Coefficients.Estimate;
-[n, ~] = size(yTest);
+[n, ~] = size(xTest);
 yPred = [ones(n,1), xTest] * coeffs;
 
 % Remove high and low values from prediction
