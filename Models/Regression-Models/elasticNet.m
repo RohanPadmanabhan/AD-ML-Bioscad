@@ -20,22 +20,8 @@ clear fullFile prefix extension rawData inputFilename
 %% Extract the output data
 [outData, mcid, maxSCORAD, ~] = extractOutputs(preprocessedData);
 
-%% Extract the continuous data
-contDataStartCol = 19;
-[~, p] = size(preprocessedData);
-contData = preprocessedData(:, contDataStartCol:p);
-
-clear contDataStartCol p
-
-%% Extract the categorical data
-catData = extractCategoricalData(preprocessedData);
-
-%% Combine the two to get the input data
-inpData = [catData, contData];
-varNames = ['Constant', inpData.Properties.VariableNames];
-inpData = table2array(inpData);
-
-clear catData contData
+%% Extract the input data
+[inpData, varNames] = extractCombinedInpData(preprocessedData);
 
 %% Elastic net
 
