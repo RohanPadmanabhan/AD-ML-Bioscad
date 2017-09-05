@@ -3,7 +3,7 @@ function [fullResults] = logisticRegression(inpData, outData)
 addpath('../Utils/');
 
 % Define constants
-nCross = 100;
+nCross = 200;
 testProportion = 0.2;
 valProportion = 0.25;
 
@@ -19,7 +19,6 @@ yTestFull = zeros(nCross, numTestCases);
 
 tic
 
-
 % Cross-validate
 parfor i = 1 : nCross
     
@@ -27,19 +26,24 @@ parfor i = 1 : nCross
     [xTest, xTrainVal, yTest, yTrainVal] = splitData(inpData, outData, testProportion);
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
+    % Suppress warnings from glmfit
+    warning('off','stats:glmfit');
+    
     % Train the model and predict the validation data
-    coeffs = glmfit(xTrain, yTrain,'binomial','link','logit');
-    yPredVal = genRegPred(coeffs, xVal, 1);   
+    logitCoeffs = glmfit(xTrain, yTrain,'binomial', 'logit');
+    yPredVal = glmval(logitCoeffs, xVal, 'logit');
     
     % Find the best threshold value
     bestThresholds(i) = findBestThreshold(yPredVal, yVal);
     
     % Test the model
-    yPredTest = genRegPred(coeffs, xTest, 1);
-    predSucc(i) = categoricalPredictionAcc(yPredTest, yTest, bestThresholds(i));
+    yPredTest = glmval(logitCoeffs, xTest, 'logit');
+    yPredTest = thresholdData(yPredTest, bestThresholds(i));
+    eval = binaryPerfEval(yPredTest, yTest);
+    predSucc(i) = eval.accuracy;
     
     %Save the results
-    yPredFull(i, :) = double(yPredTest > bestThresholds(i));
+    yPredFull(i, :) = yPredTest;
     yTestFull(i, :) = yTest;
     
 end
@@ -49,12 +53,13 @@ toc
 clear n nCross numTestCases testProportion valProportion
 
 %% Re-train the matrix on full data set
-[coeffs, ~] = genRegTrainPred(inpData, outData, inpData, 1);
+logitCoeffs = glmfit(inpData, outData,'binomial', 'logit');
 
 %% Analyse the results
 
 % Reshape the matrices and get the final success value
 [yTestFull, yPredFull, ~, ~, predSuccFinal] = analyseResults(yTestFull, yPredFull, 0);
+eval = binaryPerfEval(yPredFull, yTestFull);
 
 % Calculate the weighted mean
 nonExtremeLocs = (bestThresholds > 0) & (bestThresholds < 1);
@@ -66,7 +71,8 @@ thresholdFinal = sum(nonExtrThresh .* nonExtrWeights) / sum(nonExtrWeights);
 fullResults = struct();
 fullResults.threshold = thresholdFinal;
 fullResults.successRate = predSuccFinal;
-fullResults.coefficients = coeffs;
+fullResults.evaluation = eval;
+fullResults.coefficients = logitCoeffs;
 fullResults.yPredFull = yPredFull;
 fullResults.yTestFull = yTestFull;
 
