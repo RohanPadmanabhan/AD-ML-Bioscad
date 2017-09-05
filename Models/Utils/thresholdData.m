@@ -1,4 +1,3 @@
-function [predThresh, actThresh] = thresholdData(pred, actual, threshold)
+function [predThresh] = thresholdData(pred, threshold)
 
-predThresh = double(pred > threshold);
-actThresh = double(actual > threshold);
+predThresh = double(pred >= threshold);
