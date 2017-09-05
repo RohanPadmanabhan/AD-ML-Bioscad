@@ -8,8 +8,10 @@ n = length(thresholdTestVals);
 thresholdAcc = zeros(1, n);
 
 % Compute the accuracy for each threshold value
-for i=1:n
-    thresholdAcc(i) = categoricalPredictionAcc(pred, actual, thresholdTestVals(i));
+for i=1:n    
+    [predThresh, actThresh] = thresholdData(pred, actual, thresholdTestVals(i));
+    eval = binaryPerfEval(predThresh, actThresh);
+    thresholdAcc(i) = eval.accuracy;
 end
 
 % Find the best values
