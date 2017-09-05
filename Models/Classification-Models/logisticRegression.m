@@ -17,8 +17,6 @@ numTestCases = n * testProportion;
 yPredFull = zeros(nCross, numTestCases);
 yTestFull = zeros(nCross, numTestCases);
 
-tic
-
 % Cross-validate
 parfor i = 1 : nCross
     
@@ -47,8 +45,6 @@ parfor i = 1 : nCross
     yTestFull(i, :) = yTest;
     
 end
-
-toc
 
 clear n nCross numTestCases testProportion valProportion
 
