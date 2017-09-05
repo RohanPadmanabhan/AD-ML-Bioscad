@@ -31,7 +31,7 @@ else
 end
 
 %% Compute the Matthews correlation coefficient (avoiding divide by zero errors)
-if (truePos + falsePosv == 0)||(trueNeg + falseNeg  == 0)
+if (truePos + falsePos == 0)||(trueNeg + falseNeg  == 0)
     mcc=0;
 else
     numerator = truePos*trueNeg-falsePos*falseNeg;
