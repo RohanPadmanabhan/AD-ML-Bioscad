@@ -21,14 +21,14 @@ tic
 
 
 % Cross-validate
-for i = 1 : nCross
+parfor i = 1 : nCross
     
     % Split the data in totesting, training, and validation
     [xTest, xTrainVal, yTest, yTrainVal] = splitData(inpData, outData, testProportion);
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
     % Train the model and predict the validation data
-    coeffs = glmfit(xTrain, yTrain,'binomial','link','probit');
+    coeffs = glmfit(xTrain, yTrain,'binomial','link','logit');
     yPredVal = genRegPred(coeffs, xVal, 1);   
     
     % Find the best threshold value
