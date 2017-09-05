@@ -62,10 +62,7 @@ logitCoeffs = glmfit(inpData, outData,'binomial', 'logit');
 eval = binaryPerfEval(yPredFull, yTestFull);
 
 % Calculate the weighted mean
-nonExtremeLocs = (bestThresholds > 0) & (bestThresholds < 1);
-nonExtrThresh = bestThresholds(nonExtremeLocs);
-nonExtrWeights = predSucc(nonExtremeLocs);
-thresholdFinal = sum(nonExtrThresh .* nonExtrWeights) / sum(nonExtrWeights);
+thresholdFinal = sum(bestThresholds .* predSucc) / sum(predSucc);
 
 %% Save the results in a struct
 fullResults = struct();
