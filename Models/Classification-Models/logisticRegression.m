@@ -3,7 +3,7 @@ function [fullResults] = logisticRegression(inpData, outData)
 addpath('../Utils/');
 
 % Define constants
-nCross = 200;
+nCross = 100;
 testProportion = 0.2;
 valProportion = 0.25;
 
@@ -70,7 +70,7 @@ thresholdFinal = sum(nonExtrThresh .* nonExtrWeights) / sum(nonExtrWeights);
 %% Save the results in a struct
 fullResults = struct();
 fullResults.threshold = thresholdFinal;
-fullResults.successRate = predSuccFinal;
+fullResults.accuracy = predSuccFinal;
 fullResults.evaluation = eval;
 fullResults.coefficients = logitCoeffs;
 fullResults.yPredFull = yPredFull;
