@@ -22,37 +22,38 @@ clear fullFile prefix extension rawData inputFilename
 outData = preprocessedData.ObjectiveSCORAD;
 outData = thresholdData(outData, eps);
 
-%% Define constants and pre-allocate space
+%% Extract the input data
 
-% Define start and end values for continuous data
-contDataStart = 19;
-[~, contDataEnd] = size(preprocessedData);
-numAttr = contDataEnd - contDataStart + 1;
+% Extract both the categorical and continuous data
+[inpData, varNamesFull] = extractCombinedInpData(preprocessedData);
 
-% Preallocate space for structs
+% Remove the constant from the list of variable names
+varNamesFull(1) = [];
+
+%% Pre-allocate space
+[~, numAttr] = size(inpData);
 singleResults = repmat(createIndivAttrStruct(), numAttr, 1 );
 
 %% Perform logistic regression
 
-for i = contDataStart : contDataEnd
+for i = 1 : numAttr
     
     % Define the singular attribute for the input data
-    inpData = table2array(preprocessedData(:, i));
+    singularInpData = inpData(:, i);
     
     % Define the attribute names
-    attributeName = preprocessedData.Properties.VariableNames(i);
+    attributeName = varNamesFull(i);
     varNames = ['Constant', attributeName];
     
     % Perform logistic regression
-    tempResults = logisticRegression(inpData, outData);
+    tempResults = logisticRegression(singularInpData, outData);
     
     % Add the variable names
     tempResults.varNames = varNames;
     tempResults.attribute = attributeName;
     
     % Assign the results in to the array
-    index = i - contDataStart + 1;
-    singleResults(index) = tempResults;
+    singleResults(i) = tempResults;
 end
 
 clearvars -except preprocessedData singleResults outputFileName
