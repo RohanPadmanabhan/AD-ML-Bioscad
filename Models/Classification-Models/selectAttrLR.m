@@ -22,13 +22,14 @@ outData = preprocessedData.ObjectiveSCORAD;
 outData = double(outData > 0);
 
 %% Extract the input data
-[inpDataFull, varNames] = extractCombinedInpData(preprocessedData);
+[inpDataFull, varNamesFull] = extractCombinedInpData(preprocessedData);
 
 %% Select the variables to use
-inpData = selectAttributes(inpDataFull, varNames);
+[inpData, varNames] = selectAttributes(inpDataFull, varNamesFull);
 
 %% Perform logistic regression
 selectDataRes = logisticRegression(inpData, outData);
+selectDataRes.varNames = varNames;
 
 clearvars -except selectDataRes
 

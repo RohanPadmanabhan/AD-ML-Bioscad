@@ -1,4 +1,4 @@
-function [inpData] = selectAttributes(inpDataFull, varNames)
+function [selectData, selectNames] = selectAttributes(inpDataFull, varNames)
 
 % Allows the user to select the variables they wish to use
 
@@ -19,10 +19,12 @@ end
 
 % Preallocate space for table
 nAttr = input('Enter the number of attributes to use: ');
-inpData = zeros(nPoints, nAttr);
+selectData = zeros(nPoints, nAttr);
+selectNames = cell(1, nAttr);
 
 % Select the required attributes
 for i = 1:nAttr
    attrNum = input('Select the next attribute: ');
-   inpData(:,i) = inpDataFull(:, attrNum);
+   selectData(:,i) = inpDataFull(:, attrNum);
+   selectNames(i) = varNames(attrNum);
 end
