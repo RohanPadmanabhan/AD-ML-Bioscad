@@ -61,6 +61,7 @@ thresholdFinal = sum(bestThresholds .* predSucc) / sum(predSucc);
 
 % Full evaluation
 eval = binaryPerfEval(yPredFull, yTestFull, thresholdFinal);
+eval = rmfield(eval, 'auc');
 
 %% Save the results in a struct
 fullResults = struct();
