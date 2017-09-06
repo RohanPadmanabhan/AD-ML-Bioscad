@@ -1,11 +1,16 @@
 function [inpData] = selectAttributes(inpDataFull, varNames)
 
-%% Allows the user to select the variables they wish to use
+% Allows the user to select the variables they wish to use
 
 % Remove the constant from the varNames
 if isequal(varNames(1), {'Constant'})
     varNames(1) = [];
 end
+
+% Check the inputs
+nNames = length(varNames);
+[nPoints, nAttr] = size(inpDataFull);
+assert(nAttr == nNames, 'Size of variable names and variable matrix does not match.');
 
 % Display variables to use
 for i = 1:length(varNames)
@@ -13,7 +18,6 @@ for i = 1:length(varNames)
 end
 
 % Preallocate space for table
-[nPoints, ~] = size(inpDataFull);
 nAttr = input('Enter the number of attributes to use: ');
 inpData = zeros(nPoints, nAttr);
 
