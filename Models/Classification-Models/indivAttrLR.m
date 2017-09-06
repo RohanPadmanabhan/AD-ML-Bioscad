@@ -50,7 +50,8 @@ for i = 1 : numAttr
     
     % Add the variable names
     tempResults.varNames = varNames;
-    tempResults.attribute = attributeName;
+    tempResults.attributeName = attributeName;
+    tempResults.attributeNumber = i;
     
     % Assign the results in to the array
     singleResults(i) = tempResults;
@@ -66,7 +67,7 @@ singleResults = struct2table(singleResults);
 singleResults = sortrows(singleResults, accuracyCol, 'Descend');
 
 % Reorder the attributes
-singleResults = [singleResults(:,8), singleResults(:,1:7)];
+singleResults = [singleResults(:,8:9), singleResults(:,1:7)];
 
 clear accuracyCol;
 

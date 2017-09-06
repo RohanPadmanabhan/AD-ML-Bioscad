@@ -11,4 +11,5 @@ exampleStruct.coefficients = 0;
 exampleStruct.yPredFull = 0;
 exampleStruct.yTestFull = 0;
 exampleStruct.varNames = [];
-exampleStruct.attribute = '';
+exampleStruct.attributeName = '';
+exampleStruct.attributeNumber = 0;
