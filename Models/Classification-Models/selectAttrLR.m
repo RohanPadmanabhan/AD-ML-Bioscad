@@ -28,7 +28,9 @@ outData = double(outData > 0);
 inpData = selectAttributes(inpDataFull, varNames);
 
 %% Perform logistic regression
-fullDataRes = logisticRegression(inpData, outData);
-fullDataRes.varNames = varNames;
+selectDataRes = logisticRegression(inpData, outData);
 
-clearvars -except fullDataRes
+clearvars -except selectDataRes
+
+%% Display preliminary results
+display(selectDataRes.evaluation);
