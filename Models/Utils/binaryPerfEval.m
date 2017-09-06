@@ -1,7 +1,12 @@
-function [eval] = binaryPerfEval(pred, actual)
+function [eval] = binaryPerfEval(predUnThresh, actual, threshold)
 % Input 1: Array of predicted binary classification data
 % Input 2: Array of actual binary clasification data
 
+%% Threshold the values
+predThresh = thresholdData(predUnThresh, threshold);
+
+%% Calculate the area under curve
+[~, ~, ~, auc] = perfcurve(actual, predUnThresh,1);
 
 %% Find the locations of the positive values
 posLocs = (actual==1);
@@ -12,8 +17,8 @@ numPositives = sum(actual);
 numNegatives = numTotal - numPositives;
 
 %% Find the confusion matrix values
-truePos = sum(actual(posLocs)==pred(posLocs));
-trueNeg = sum(actual(~posLocs)==pred(~posLocs));
+truePos = sum(actual(posLocs) == predThresh(posLocs));
+trueNeg = sum(actual(~posLocs) == predThresh(~posLocs));
 falsePos = numNegatives-trueNeg;
 falseNeg = numPositives-truePos;
 
@@ -52,3 +57,4 @@ eval.precision = precision;
 eval.fScore = fScore;
 eval.mcc = mcc;
 eval.dor = dor;
+eval.auc = auc;

@@ -36,11 +36,11 @@ parfor i = 1 : nCross
     
     % Test the model
     yPredTest = glmval(logitCoeffs, xTest, 'logit');
-    yPredTest = thresholdData(yPredTest, bestThresholds(i));
-    eval = binaryPerfEval(yPredTest, yTest);
+    eval = binaryPerfEval(yPredTest, yTest, bestThresholds(i));
     predSucc(i) = eval.accuracy;
     
     %Save the results
+    yPredTest = thresholdData(yPredTest, bestThresholds(i));
     yPredFull(i, :) = yPredTest;
     yTestFull(i, :) = yTest;
     
@@ -55,10 +55,12 @@ logitCoeffs = glmfit(inpData, outData,'binomial', 'logit');
 
 % Reshape the matrices and get the final success value
 [yTestFull, yPredFull, ~, ~, predSuccFinal] = analyseResults(yTestFull, yPredFull, 0);
-eval = binaryPerfEval(yPredFull, yTestFull);
 
 % Calculate the weighted mean
 thresholdFinal = sum(bestThresholds .* predSucc) / sum(predSucc);
+
+% Full evaluation
+eval = binaryPerfEval(yPredFull, yTestFull, thresholdFinal);
 
 %% Save the results in a struct
 fullResults = struct();

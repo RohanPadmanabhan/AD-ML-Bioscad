@@ -9,8 +9,7 @@ thresholdAcc = zeros(1, n);
 
 % Compute the accuracy for each threshold value
 for i=1:n    
-    predThresh = thresholdData(pred, thresholdTestVals(i));
-    eval = binaryPerfEval(predThresh, actual);
+    eval = binaryPerfEval(pred, actual, thresholdTestVals(i));
     thresholdAcc(i) = eval.accuracy;
 end
 
