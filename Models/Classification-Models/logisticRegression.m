@@ -25,7 +25,7 @@ parfor i = 1 : nCross
     [xVal, xTrain, yVal, yTrain] = splitData(xTrainVal, yTrainVal, valProportion);
     
     % Suppress warnings from glmfit
-    warning('off','stats:glmfit');
+    warning('off','all');
     
     % Train the model and predict the validation data
     logitCoeffs = glmfit(xTrain, yTrain,'binomial', 'logit');
