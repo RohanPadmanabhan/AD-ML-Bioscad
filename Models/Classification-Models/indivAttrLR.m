@@ -14,6 +14,7 @@ inputFilename = '../../preprocessed-combined-non-lesional.mat';
 load(inputFilename);
 
 %outputFileName = input('Enter the output file path: ', 's');
+outputFileName = 'Results/indivAttrLR.mat';
 
 clear fullFile prefix extension rawData inputFilename
 
@@ -54,7 +55,7 @@ for i = contDataStart : contDataEnd
     singleResults(index) = tempResults;
 end
 
-clearvars -except preprocessedData singleResults
+clearvars -except preprocessedData singleResults outputFileName
 
 %% Sort the results by in to best values
 
@@ -67,3 +68,6 @@ singleResults = sortrows(singleResults, accuracyCol, 'Descend');
 singleResults = [singleResults(:,8), singleResults(:,1:7)];
 
 clear accuracyCol;
+
+%% Save the results
+save(outputFileName, 'singleResults');

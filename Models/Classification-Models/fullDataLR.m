@@ -14,6 +14,7 @@ inputFilename = '../../preprocessed-combined-non-lesional.mat';
 load(inputFilename);
 
 %outputFileName = input('Enter the output file path: ', 's');
+outputFileName = 'Results/fullDataLR.mat';
 
 clear fullFile prefix extension rawData inputFilename
 
@@ -29,3 +30,6 @@ fullDataRes = logisticRegression(inpData, outData);
 fullDataRes.varNames = varNames;
 
 clear varNames outData inpData
+
+%% Save the results
+save(outputFileName, 'fullDataRes');
