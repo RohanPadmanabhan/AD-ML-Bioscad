@@ -19,7 +19,7 @@ clear fullFile prefix extension rawData inputFilename
 
 %% Extract the output data
 outData = preprocessedData.ObjectiveSCORAD;
-outData = double(outData > 0);
+outData = thresholdData(outData, eps);
 
 %% Define constants and pre-allocate space
 

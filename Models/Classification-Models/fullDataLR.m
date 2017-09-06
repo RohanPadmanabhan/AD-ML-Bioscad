@@ -19,7 +19,7 @@ clear fullFile prefix extension rawData inputFilename
 
 %% Extract the output data
 outData = preprocessedData.ObjectiveSCORAD;
-outData = double(outData > 0);
+outData = thresholdData(outData, eps);
 
 %% Extract the input data
 [inpData, varNames] = extractCombinedInpData(preprocessedData);
