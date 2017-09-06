@@ -55,3 +55,15 @@ for i = contDataStart : contDataEnd
 end
 
 clearvars -except preprocessedData singleResults
+
+%% Sort the results by in to best values
+
+% Convert the results to a table and sort by accuracy
+accuracyCol = 2;
+singleResults = struct2table(singleResults);
+singleResults = sortrows(singleResults, accuracyCol, 'Descend');
+
+% Reorder the attributes
+singleResults = [singleResults(:,8), singleResults(:,1:7)];
+
+clear accuracyCol;
