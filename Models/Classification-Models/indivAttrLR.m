@@ -71,3 +71,4 @@ clear accuracyCol;
 
 %% Save the results
 save(outputFileName, 'singleResults');
+clear outputFileName

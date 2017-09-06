@@ -33,3 +33,4 @@ clear varNames outData inpData
 
 %% Save the results
 save(outputFileName, 'fullDataRes');
+clear outputFileName preprocessedData
