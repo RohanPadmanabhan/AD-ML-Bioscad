@@ -57,7 +57,7 @@ for i = 1 : numAttr
     singleResults(i) = tempResults;
 end
 
-clear i tempResults numAttr singularInpData tempResults attributeName
+clear i tempResults numAttr singularInpData tempResults attributeName varNames
 
 %% Sort the results by in to best values
 
@@ -72,5 +72,5 @@ singleResults = [singleResults(:,8:9), singleResults(:,1:7)];
 clear accuracyCol;
 
 %% Save the results
-save(outputFileName, 'singleResults', 'inpDataFull', 'outData', 'varNames');
+save(outputFileName, 'singleResults', 'inpDataFull', 'outData', 'varNamesFull');
 clear outputFileName
