@@ -25,13 +25,13 @@ outData = thresholdData(outData, eps);
 %% Extract the input data
 
 % Extract both the categorical and continuous data
-[inpData, varNamesFull] = extractCombinedInpData(preprocessedData);
+[inpDataFull, varNamesFull] = extractCombinedInpData(preprocessedData);
 
 % Remove the constant from the list of variable names
 varNamesFull(1) = [];
 
 %% Pre-allocate space
-[~, numAttr] = size(inpData);
+[~, numAttr] = size(inpDataFull);
 singleResults = repmat(createIndivAttrStruct(), numAttr, 1 );
 
 %% Perform logistic regression
@@ -39,7 +39,7 @@ singleResults = repmat(createIndivAttrStruct(), numAttr, 1 );
 for i = 1 : numAttr
     
     % Define the singular attribute for the input data
-    singularInpData = inpData(:, i);
+    singularInpData = inpDataFull(:, i);
     
     % Define the attribute names
     attributeName = varNamesFull(i);
@@ -57,7 +57,7 @@ for i = 1 : numAttr
     singleResults(i) = tempResults;
 end
 
-clearvars -except preprocessedData singleResults outputFileName
+clear i tempResults numAttr singularInpData tempResults attributeName
 
 %% Sort the results by in to best values
 
@@ -72,5 +72,5 @@ singleResults = [singleResults(:,8:9), singleResults(:,1:7)];
 clear accuracyCol;
 
 %% Save the results
-save(outputFileName, 'singleResults');
+save(outputFileName, 'singleResults', 'inpDataFull', 'outData', 'varNames');
 clear outputFileName
