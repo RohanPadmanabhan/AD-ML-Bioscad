@@ -4,6 +4,7 @@
 close all
 clear
 clc
+addpath('../Utils/');
 
 %% Load the data
 load('Results/indivAttrLR.mat');
