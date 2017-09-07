@@ -10,6 +10,9 @@ load('Results/indivAttrLR.mat');
 %% Sort the input data so best attributes are first
 bestAttrOrder = singleResults.attributeNumber;
 inpDataFull = inpDataFull(:, bestAttrOrder);
+varNamesFull = varNamesFull(bestAttrOrder);
+
+clear bestAttrOrder
 
 %% Pre-allocate space
 [~, numAttr] = size(inpDataFull);
@@ -35,7 +38,7 @@ for i = 1 : numAttr
     nBestResults(i) = tempResults;
 end
 
-clear i tempResults numAttr singularInpData tempResults attributeName
+clear i tempResults numAttr tempResults inpData
 
 %% Sort the results by in to best values
 
@@ -46,3 +49,11 @@ nBestResults = sortrows(nBestResults, accuracyCol, 'Descend');
 
 % Reorder the attributes
 nBestResults = [nBestResults(:,7), nBestResults(:,1:6)];
+
+clear accuracyCol
+
+
+%% Save the results to file
+
+outputPath = 'Results/nTopAttrLR.mat';
+save(outputPath, 'nBestResults', 'varNamesFull');
