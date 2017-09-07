@@ -6,7 +6,14 @@ function [eval] = binaryPerfEval(predUnThresh, actual, threshold)
 predThresh = thresholdData(predUnThresh, threshold);
 
 %% Calculate the area under curve
-[~, ~, ~, auc] = perfcurve(actual, predUnThresh,1);
+% AUC cannot be calculated if all same predictions
+try
+    % Try calculating AUC
+    [~, ~, ~, auc] = perfcurve(actual, predUnThresh,1);
+catch
+    % Fail value
+    auc = 0;
+end
 
 %% Find the locations of the positive values
 posLocs = (actual==1);
