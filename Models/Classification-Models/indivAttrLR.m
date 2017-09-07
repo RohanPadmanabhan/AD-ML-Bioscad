@@ -10,25 +10,13 @@ addpath('../Utils/');
 %% Load the data and get the file names
 
 %inputFilename = input('Enter the input file path: ', 's');
-inputFilename = '../../preprocessed-combined-non-lesional.mat';
+inputFilename = 'logisticRegressionRawData.mat';
 load(inputFilename);
 
 %outputFileName = input('Enter the output file path: ', 's');
 outputFileName = 'Results/indivAttrLR.mat';
 
 clear fullFile prefix extension rawData inputFilename
-
-%% Extract the output data
-outData = preprocessedData.ObjectiveSCORAD;
-outData = thresholdData(outData, eps);
-
-%% Extract the input data
-
-% Extract both the categorical and continuous data
-[inpDataFull, varNamesFull] = extractCombinedInpData(preprocessedData);
-
-% Remove the constant from the list of variable names
-varNamesFull(1) = [];
 
 %% Pre-allocate space
 [~, numAttr] = size(inpDataFull);
