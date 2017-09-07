@@ -12,8 +12,6 @@ bestAttrOrder = singleResults.attributeNumber;
 inpDataFull = inpDataFull(:, bestAttrOrder);
 varNamesFull = varNamesFull(bestAttrOrder);
 
-clear bestAttrOrder
-
 %% Pre-allocate space
 [~, numAttr] = size(inpDataFull);
 nBestResults = repmat(createNTopAttrStruct(), numAttr, 1 );
@@ -54,6 +52,12 @@ clear accuracyCol
 
 
 %% Save the results to file
-
 outputPath = 'Results/nTopAttrLR.mat';
-save(outputPath, 'nBestResults', 'varNamesFull');
+save(outputPath, 'nBestResults', 'varNamesFull', 'bestAttrOrder');
+
+clear outputPath
+
+%% Draw a graph of the results
+scatter(nBestResults.numTopAttributes, nBestResults.accuracy, 'x');
+xlabel('Number of top performing attributes used')
+ylabel('Accuracy')
