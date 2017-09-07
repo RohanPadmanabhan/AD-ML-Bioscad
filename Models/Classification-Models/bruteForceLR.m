@@ -28,13 +28,19 @@ parfor i = 1 : numComb
     inpData = inpDataFull(:, combination);
     varNames = varNamesFull(combination);
     
-    % Perform logistic regression
-    tempResults = logisticRegression(inpData, outData);
-    
-    % Add other variables to the results struct
-    tempResults.varNames = varNames;
-    tempResults.attributeNumbers = combination;
-    tempResults.numAttributes = nInpAttr;
+    % Try performing LR
+    try
+        % Perform logistic regression
+        tempResults = logisticRegression(inpData, outData);
+        
+        % Add other variables to the results struct
+        tempResults.varNames = varNames;
+        tempResults.attributeNumbers = combination;
+        tempResults.numAttributes = nInpAttr;
+    catch
+        % Fail value
+        tempResults = createBFLRStruct();
+    end
     
     % Assign the results in to the array
     bfResults(i) = tempResults;
