@@ -1,15 +1,13 @@
-function [exampleStruct] = createIndivAttrStruct()
+function [indivAttrStruct] = createIndivAttrStruct()
 
 % Create a struct with the same fields as the struct used for individual
 % attribute logistic regression
 
-exampleStruct = struct();
-exampleStruct.threshold = 0;
-exampleStruct.accuracy = 0;
-exampleStruct.evaluation = struct();
-exampleStruct.coefficients = 0;
-exampleStruct.yPredFull = 0;
-exampleStruct.yTestFull = 0;
-exampleStruct.varNames = [];
-exampleStruct.attributeName = '';
-exampleStruct.attributeNumber = 0;
+indivAttrStruct = struct();
+indivAttrStruct.threshold = 0;
+indivAttrStruct.accuracy = 0;
+indivAttrStruct.evaluation = struct();
+indivAttrStruct.coefficients = 0;
+indivAttrStruct.yPredFull = 0;
+indivAttrStruct.yTestFull = 0;
+indivAttrStruct.numTopAttributes = 0;
