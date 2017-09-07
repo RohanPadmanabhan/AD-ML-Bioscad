@@ -1,6 +1,7 @@
 %% Use logistic regression on the top attributes
 
 %% Clean slate
+close all
 clear
 clc
 
