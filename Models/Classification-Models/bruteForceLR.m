@@ -45,8 +45,8 @@ end
 
 % Convert the results to a table and sort by accuracy
 accuracyCol = 2;
-nBestResults = struct2table(nBestResults);
-nBestResults = sortrows(nBestResults, accuracyCol, 'Descend');
+bfResults = struct2table(bfResults);
+bfResults = sortrows(bfResults, accuracyCol, 'Descend');
 
 
 %% Save the results to file
