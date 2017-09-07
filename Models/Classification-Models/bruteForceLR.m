@@ -51,6 +51,6 @@ bfResults = sortrows(bfResults, accuracyCol, 'Descend');
 
 %% Save the results to file
 outputPath = strcat('Results/bruteForce', num2str(nInpAttr), 'Attributes.mat');
-save(outputPath, 'nBestResults');
+save(outputPath, 'bfResults');
 
 clear outputPath
