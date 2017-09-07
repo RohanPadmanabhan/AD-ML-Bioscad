@@ -10,4 +10,6 @@ indivAttrStruct.evaluation = struct();
 indivAttrStruct.coefficients = 0;
 indivAttrStruct.yPredFull = 0;
 indivAttrStruct.yTestFull = 0;
-indivAttrStruct.numTopAttributes = 0;
+indivAttrStruct.varNames = [];
+indivAttrStruct.attributeName = '';
+indivAttrStruct.attributeNumber = 0;
