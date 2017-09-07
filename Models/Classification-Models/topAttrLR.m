@@ -20,7 +20,7 @@ nBestResults = repmat(createNTopAttrStruct(), numAttr, 1 );
 
 %% Perform logistic regression
 
-for i = 1 : numAttr
+parfor i = 1 : numAttr
     
     % Turn off warnings
     warning('off', 'all');

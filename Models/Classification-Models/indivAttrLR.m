@@ -24,7 +24,7 @@ singleResults = repmat(createIndivAttrStruct(), numAttr, 1 );
 
 %% Perform logistic regression
 
-for i = 1 : numAttr
+parfor i = 1 : numAttr
     
     % Define the singular attribute for the input data
     singularInpData = inpDataFull(:, i);

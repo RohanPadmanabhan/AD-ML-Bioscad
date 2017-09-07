@@ -18,7 +18,7 @@ yPredFull = zeros(nCross, numTestCases);
 yTestFull = zeros(nCross, numTestCases);
 
 % Cross-validate
-parfor i = 1 : nCross
+for i = 1 : nCross
     
     % Split the data in totesting, training, and validation
     [xTest, xTrainVal, yTest, yTrainVal] = splitData(inpData, outData, testProportion);

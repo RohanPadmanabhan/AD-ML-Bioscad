@@ -21,7 +21,7 @@ bfResults = repmat(createBFLRStruct(), numComb, 1 );
 
 %% Perform logistic regression on all combinations
 
-for i = 1 : numComb
+parfor i = 1 : numComb
     
     % Select the data for this combination
     combination = combinationsFull(i, :);
