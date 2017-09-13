@@ -6,6 +6,3 @@
 *.m~
 
 #Files that are too big
-*bruteForce1to5Attr.mat
-*bruteForce5Attributes.mat
-
