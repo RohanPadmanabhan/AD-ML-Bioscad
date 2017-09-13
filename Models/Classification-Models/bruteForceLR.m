@@ -37,6 +37,8 @@ parfor i = 1 : numComb
         tempResults.varNames = varNames;
         tempResults.attributeNumbers = combination;
         tempResults.numAttributes = nInpAttr;
+        tempResults = rmfield(tempResults, 'yPredFull');
+        tempResults = rmfield(tempResults, 'yTestull');
     catch
         % Fail value
         tempResults = createBFLRStruct();

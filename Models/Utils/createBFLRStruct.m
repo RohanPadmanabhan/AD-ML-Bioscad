@@ -7,3 +7,5 @@ bFLRStruct = createBasicLRStruct();
 bFLRStruct.varNames = [];
 bFLRStruct.attributeNumbers = [];
 bFLRStruct.numAttributes = 0;
+bFLRStruct = rmfield(bFLRStruct, 'yPredFull');
+bFLRStruct = rmfield(bFLRStruct, 'yTestFull');
