@@ -57,7 +57,7 @@ clear i numericalDataEndColumn stdDevLimit currColumn
 % Create variables defining position of data within table
 numDataStartCol = 2; % First column with numeric data
 [~,numDataEndCol] = size(preprocessedData);
-minimumFillPercentage = 85;
+minimumFillPercentage = 80;
 
 % Remove underfilled rows
 preprocessedData = removeUnderfilledRows(preprocessedData, numDataStartCol, numDataEndCol, minimumFillPercentage);
