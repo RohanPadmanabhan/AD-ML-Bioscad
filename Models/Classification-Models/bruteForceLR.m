@@ -9,7 +9,7 @@ rng(100)
 
 %% Load the data
 load('logisticRegressionRawData.mat');
-nInpAttr = 2;
+nInpAttr = 1;
 
 %% List the combinations
 [~, nAttr] = size(inpDataFull);
@@ -38,7 +38,7 @@ parfor i = 1 : numComb
         tempResults.attributeNumbers = combination;
         tempResults.numAttributes = nInpAttr;
         tempResults = rmfield(tempResults, 'yPredFull');
-        tempResults = rmfield(tempResults, 'yTestull');
+        tempResults = rmfield(tempResults, 'yTestFull');
     catch
         % Fail value
         tempResults = createBFLRStruct();
