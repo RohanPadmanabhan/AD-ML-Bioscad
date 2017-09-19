@@ -9,20 +9,19 @@ addpath('../Utils/');
 
 %% Load the data and get the file names
 
-%inputFilename = input('Enter the input file path: ', 's');
-inputFilename = '../../preprocessed-combined-non-lesional.mat';
+% Load input data
+inputFilename = 'logisticRegressionRawData.mat';
 load(inputFilename);
 
-%outputFileName = input('Enter the output file path: ', 's');
 outputFileName = 'Results/fullDataLR.mat';
 
 clear fullFile prefix extension rawData inputFilename
 
 %% Perform logistic regression
-fullDataRes = logisticRegression(inpData, outData);
-fullDataRes.varNames = varNames;
+fullDataRes = logisticRegression(inpDataFull, outData);
+fullDataRes.varNames = varNamesFull;
 
-clear varNames outData inpData
+clear varNamesFull outData inpDataFull
 
 %% Save the results
 save(outputFileName, 'fullDataRes');
