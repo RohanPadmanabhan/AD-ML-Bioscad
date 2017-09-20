@@ -6,8 +6,8 @@ extension = '.mat';
 fullFile = strcat(prefix, filename, extension);
 load(fullFile);
 
-% Remove the first 12 columns of the data
-preprocessedData(:, 1:12) = [];
+% Remove the first 15 (categorical) columns of the data
+preprocessedData(:, 1:15) = [];
 
 % Convert the table to an array
 preprocessedData = table2array(preprocessedData);
